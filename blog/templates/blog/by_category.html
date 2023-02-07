@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ current_category.title }} :: Все категории</title>
+</head>
+<body>
+<h1>Все посты</h1>
+
+<h2>Категория: {{ current_category.title }}</h2>
+<div>
+    <a href="{% url 'homepage' %}">Главная</a>
+    {% for category in categories %}
+    <a href="{% url 'by_category' category.pk %}">{{ category.title }}</a>
+    {% endfor %}
+</div>
+{% for post in posts %}
+<div>
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.content }}</p>
+</div>
+{% endfor %}
+</body>
+</html>
