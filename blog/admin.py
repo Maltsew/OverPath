@@ -17,7 +17,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'created_on',)
+    list_display = ('title', 'author', 'created_on', 'slug')
     list_display_links = ('title',)
     search_fields = ('title', 'author', 'created_on')
 
