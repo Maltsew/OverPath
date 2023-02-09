@@ -28,6 +28,9 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return "/blog/%s/" % self.pk
+
     class Meta:
         verbose_name_plural = 'Категории'
         verbose_name = 'Категория'
@@ -35,7 +38,7 @@ class Category(models.Model):
 
 # Модель "пост" - основной тип публикуемой информации в блоге
 class Post(models.Model):
-    title = models.CharField(max_length=200, unique=True, verbose_name='Название поста')
+    title = models.CharField(max_length=200, verbose_name='Название поста')
     slug = models.SlugField(max_length=200, unique=True, editable=False)
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
     updated_on = models.DateTimeField(auto_now=True, verbose_name='Дата обновления поста')
@@ -48,6 +51,12 @@ class Post(models.Model):
         ordering = ['-created_on']
         verbose_name_plural = 'Посты'
         verbose_name = 'Пост'
+        # Совместная комбинация названия и содержания поста должны быть уникальными в пределах таблицы в БД
+        # (защита от дублирования постов)
+        constraints = (
+            models.UniqueConstraint(fields=('title', 'content'), name='%(app_label)s_%(class)s_title_content_constraint'),
+        )
+
 
     def __str__(self):
         return self.title
