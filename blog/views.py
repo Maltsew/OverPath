@@ -7,12 +7,16 @@ from django.http import HttpResponseNotFound, Http404
 
 
 # Create your views here.
+menu = ['Main', 'About', 'Categories']
+
+
 def homepage(request):
     posts = Post.objects.all()
     categories = Category.objects.all()
     context = {
         'posts': posts,
         'categories': categories,
+        'menu': menu,
     }
     return render(request, 'blog/homepage.html', context=context)
 
