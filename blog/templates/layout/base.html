@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
+<head>
     <!-- Basic -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Site Metas -->
-    <title>BLOG</title>
+    <title>{{ BLOG }}</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -121,6 +121,7 @@
                 </nav>
             </div><!-- end container -->
         </header><!-- end header -->
+    {% block header %}
     <section class="section first-section">
             <div class="container-fluid">
                 <div class="masonry-blog clearfix">
@@ -174,6 +175,8 @@
                 </div><!-- end masonry -->
             </div>
         </section>
+    {% endblock header %}
+    {% block content %}
     <section class="section wb">
         <div class="container">
             <div class="row">
@@ -251,6 +254,7 @@
                             </div><!-- end col -->
                 </div><!-- end row -->
             </div><!-- end container -->
+        {% endblock content%}
         </section>
             <footer class="footer">
             <div class="container">
@@ -287,7 +291,6 @@
 
     <!-- Core JavaScript
     ================================================== -->
-{% static 'js/custom.js' %}
     <script src="{% static 'blog/js/jquery.min.js' %}"></script>
     <script src="{% static 'blog/js/tether.min.js' %}"></script>
     <script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
