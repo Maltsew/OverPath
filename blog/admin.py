@@ -4,10 +4,10 @@ from blog.models import Profile, Post, Category
 
 # Register your models here.
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user',)
+    list_display = ('username', 'user_email')
     # Последовательность имен полей, которые будут преобразованы в гиперссылки на страницы правки записи
-    list_display_links = ('user',)
-    search_fields = ('user',)
+    list_display_links = ('username',)
+    search_fields = ('user', 'username', 'user_email')
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -17,7 +17,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'created_on', 'slug')
+    list_display = ('title', 'author', 'created_on',)
     list_display_links = ('title',)
     search_fields = ('title', 'author', 'created_on')
 

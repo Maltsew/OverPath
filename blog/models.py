@@ -1,17 +1,16 @@
 from django.db import models
-from django.contrib.auth.models import User
-
-
-''' В качестве модели пользователя используется models.User'''
 
 
 # Модель профиля пользователя
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Профиль пользователя')
+    name = models.CharField(max_length=20, verbose_name='Имя пользователя')
+    username = models.CharField(max_length=20, verbose_name='Ник пользователя')
+    user_email = models.EmailField(verbose_name='эл. адрес пользователя')
+    about_user = models.TextField(verbose_name='Короткое описание профиля')
     # profile_image = models.ImageField(default='default.jpeg', upload_to='profile_pics', null=True, blank=True)
 
     def __str__(self):
-        return f'{self.user.first_name} {self.user.last_name}'
+        return f'{self.username} {self.user_email}'
 
     class Meta:
         verbose_name_plural = 'Профили'
@@ -22,7 +21,6 @@ class Profile(models.Model):
 class Category(models.Model):
     title = models.CharField(max_length=20, verbose_name='Название категории')
     subtitle = models.CharField(max_length=20, verbose_name='Подзаголовок категории', null=True, blank=True)
-    slug = models.SlugField()
     #thumbnail = models.ImageField()
 
     def __str__(self):
@@ -39,8 +37,7 @@ class Category(models.Model):
 # Модель "пост" - основной тип публикуемой информации в блоге
 class Post(models.Model):
     title = models.CharField(max_length=200, verbose_name='Название поста')
-    slug = models.SlugField(max_length=200, unique=True, editable=False)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
+    author = models.ForeignKey(Profile, on_delete=models.PROTECT, verbose_name='Автор')
     updated_on = models.DateTimeField(auto_now=True, verbose_name='Дата обновления поста')
     content = models.TextField(verbose_name='Содержание поста')
     categories = models.ManyToManyField(Category)
@@ -56,7 +53,6 @@ class Post(models.Model):
         constraints = (
             models.UniqueConstraint(fields=('title', 'content'), name='%(app_label)s_%(class)s_title_content_constraint'),
         )
-
 
     def __str__(self):
         return self.title
