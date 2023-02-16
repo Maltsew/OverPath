@@ -5,53 +5,28 @@
     <section class="section first-section">
             <div class="container-fluid">
                 <div class="masonry-blog clearfix">
+                    {% for post in posts %}
+                    <!-- БЛОК ПОСЛЕДНИХ ДОБАВЛЕННЫХ ПОСТОВ (или популярных) -->
+                    <!-- в блоке должно быть размещено 3 поста, обеспечить это из view -->
                     <div class="left-side">
                         <div class="masonry-box post-media">
                              <img src="{% static 'blog/images/upload/garden_cat_01.jpg' %}" alt="" class="img-fluid">
                              <div class="shadoweffect">
                                 <div class="shadow-desc">
                                     <div class="blog-meta">
-                                        <span class="bg-aqua"><a href="blog-category-01.html" title="">Gardening</a></span>
-                                        <h4><a href="#" title="">1</a></h4>
-                                        <small><a href="#" title="">DATE</a></small>
-                                        <small><a href="#" title="">by Author</a></small>
+                                        <span class="bg-aqua"><a href="blog-category-01.html" title="">CATEGORY</a></span>
+                                        <h4><a href="#" title="">{{post.title}}</a></h4>
+                                        <small><a href="#" title="">{{post.created_on}}</a></small>
+                                        <small><a href="#" title="">{{post.author.username}}</a></small>
                                     </div><!-- end meta -->
                                 </div><!-- end shadow-desc -->
                             </div><!-- end shadow -->
                         </div><!-- end post-media -->
                     </div><!-- end left-side -->
+                    {% endfor %}
 
-                    <div class="center-side">
-                        <div class="masonry-box post-media">
-                             <img src="{% static 'blog/images/upload/garden_cat_01.jpg' %}" alt="" class="img-fluid">
-                             <div class="shadoweffect">
-                                <div class="shadow-desc">
-                                    <div class="blog-meta">
-                                        <span class="bg-aqua"><a href="#" title="">Outdoor</a></span>
-                                        <h4><a href="#" title="">2</a></h4>
-                                        <small><a href="3" title="">Date</a></small>
-                                        <small><a href="#" title="">by Author</a></small>
-                                    </div><!-- end meta -->
-                                </div><!-- end shadow-desc -->
-                            </div><!-- end shadow -->
-                        </div><!-- end post-media -->
-                    </div><!-- end left-side -->
 
-                    <div class="right-side hidden-md-down">
-                        <div class="masonry-box post-media">
-                             <img src="{% static 'blog/images/upload/garden_cat_01.jpg' %}" alt="" class="img-fluid">
-                             <div class="shadoweffect">
-                                <div class="shadow-desc">
-                                    <div class="blog-meta">
-                                        <span class="bg-aqua"><a href="b#" title="">Indoor</a></span>
-                                        <h4><a href="#" title="">3</a></h4>
-                                        <small><a href="#" title="">Date</a></small>
-                                        <small><a href="#" title="">by Author</a></small>
-                                    </div><!-- end meta -->
-                                </div><!-- end shadow-desc -->
-                             </div><!-- end shadow -->
-                        </div><!-- end post-media -->
-                    </div><!-- end right-side -->
+
                 </div><!-- end masonry -->
             </div>
         </section>
@@ -66,6 +41,7 @@
 
                         <!-- ЛИСТ БЛОГОВ -->
                         <div class="blog-list clearfix">
+                            {% for post in posts %}
                             <!-- ОТДЕЛЬНЫЙ БЛОГ В СПИСКЕ БЛОГОВ -->
                             <div class="blog-box row">
                                 <!-- КОЛОНКА С МЕДИА - ФОТО ИЗ БЛОГА -->
@@ -78,14 +54,15 @@
                                         </div><!-- end media -->
                                     </div><!-- end col -->
                                 <div class="blog-meta big-meta col-md-8">
-                                        <span class="bg-aqua"><a href="#" title="">111</a></span>
-                                        <h4><a href="#" title="">222</a></h4>
-                                        <p>333</p>
-                                        <small><a href="#" title=""><i class="fa fa-eye"></i> 1887</a></small>
-                                        <small><a href="#" title="">publish_date</a></small>
-                                        <small><a href="#" title="">by Author</a></small>
+                                        <span class="bg-aqua"><a href="#" title="">CATEGORY</a></span>
+                                        <h4><a href="#" title="">{{post.title}}</a></h4>
+                                        <p>{{post.content|truncatewords:60}}</p>
+                                        <small><a href="#" title=""><i class="fa fa-eye"></i>WATCHED</a></small>
+                                        <small><a href="#" title="">{{post.created_on}}</a></small>
+                                        <small><a href="#" title="">{{post.author.username}}</a></small>
                                     </div><!-- end meta -->
                                 </div><!-- end blog-box -->
+                            {% endfor %}
                         </div><!-- end blog-list -->
                     </div><!-- end page-wrapper -->
                     <!-- SPACE FOR PAGINATOR -->

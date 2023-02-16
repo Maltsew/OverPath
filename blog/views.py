@@ -6,24 +6,19 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseNotFound, Http404
 
 
-# Create your views here.
-menu = ['Main', 'About', 'Categories']
-
-
-def base(request):
-    context = {}
-    return render(request, 'layout/base.html', context=context)
-
-
 def homepage(request):
     posts = Post.objects.all()
     categories = Category.objects.all()
     context = {
         'posts': posts,
         'categories': categories,
-        'menu': menu,
     }
     return render(request, 'blog/homepage.html', context=context)
+
+
+def base(request):
+    context = {}
+    return render(request, 'blog/post.html', context=context)
 
 
 def about(request):
