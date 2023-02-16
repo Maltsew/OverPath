@@ -1,0 +1,90 @@
+{% extends "layout/base.html" %}
+
+{% block header %}
+        <div class="page-title wb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                        <h2><i class="fa fa-leaf bg-green"></i> Blog</h2>
+                    </div><!-- end col -->
+                    <div class="col-lg-4 col-md-4 col-sm-12 hidden-xs-down hidden-sm-down">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Blog</li>
+                        </ol>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </div><!-- end page-title -->
+{% endblock header %}
+{% block content %}
+<section class="section wb">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <div class="page-wrapper">
+               <div class="blog-title-area">
+                  <span class="color-green"><a href="garden-category.html" title="">CATEGORY</a></span>
+                  <h3>POST HEADER</h3>
+
+                  <div class="blog-meta big-meta">
+                                    <small><a href="garden-single.html" title="">21 July, 2017</a></small>
+                                    <small><a href="blog-author.html" title="">by Jessica</a></small>
+                                    <small><a href="#" title=""><i class="fa fa-eye"></i> 2344</a></small>
+                  </div><!-- end meta -->
+                  <!-- POST PHOTO -->
+                  <div class="single-post-media">
+                                <img src="upload/garden_single_01.jpg" alt="" class="img-fluid">
+                  </div><!-- end media -->
+                  <!-- BLOCK CONTENT -->
+                  <div class="blog-content">
+                                <div class="pp">
+                                   <p>POST CONTENT</p>
+                                </div><!-- end pp -->
+                  </div><!-- end content -->
+
+                  <!-- POST TAGS -->
+                  <hr class="invis1">
+
+                  <!-- BLOCK COMMENTS -->
+                  <div class="custombox clearfix">
+                                <h4 class="small-title">BLOCK COMMENTS</h4>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="comments-list">
+                                            <div class="media">
+                                                <a class="media-left" href="#">
+                                                    <img src="upload/author.jpg" alt="" class="rounded-circle">
+                                                </a>
+                                               <div class="media-body">
+                                               <h4 class="media-heading user_name"> COMMENTOR NAME <small> DAYS AGO </small></h4>
+                                               <p> THIS IS COMMENT </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- end col -->
+                                </div><!-- end row -->
+                            </div><!-- end custom-box -->
+
+                            <div class="custombox clearfix">
+                                <h4 class="small-title">Leave a Reply</h4>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <form class="form-wrapper">
+                                            <input type="text" class="form-control" placeholder="Your name">
+                                            <input type="text" class="form-control" placeholder="Email address">
+                                            <input type="text" class="form-control" placeholder="Website">
+                                            <textarea class="form-control" placeholder="Your comment"></textarea>
+                                            <button type="submit" class="btn btn-primary">Submit Comment</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end page-wrapper -->
+                    </div><!-- end col -->
+                         </div><!-- end row -->
+            </div><!-- end container -->
+   </div>
+        </section>
+
+{% endblock content %}
