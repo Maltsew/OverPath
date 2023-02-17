@@ -14,8 +14,8 @@
                              <div class="shadoweffect">
                                 <div class="shadow-desc">
                                     <div class="blog-meta">
-                                        <span class="bg-aqua"><a href="blog-category-01.html" title="">CATEGORY</a></span>
-                                        <h4><a href="#" title="">{{post.title}}</a></h4>
+                                        <span class="bg-aqua"><a href="#" title="">CATEGORY</a></span>
+                                        <h4><a href="{{ post.get_absolute_url }}" title="">{{post.title}}</a></h4>
                                         <small><a href="#" title="">{{post.created_on}}</a></small>
                                         <small><a href="#" title="">{{post.author.username}}</a></small>
                                     </div><!-- end meta -->
@@ -55,8 +55,8 @@
                                     </div><!-- end col -->
                                 <div class="blog-meta big-meta col-md-8">
                                         <span class="bg-aqua"><a href="#" title="">CATEGORY</a></span>
-                                        <h4><a href="#" title="">{{post.title}}</a></h4>
-                                        <p>{{post.content|truncatewords:60}}</p>
+                                        <h4><a href="{% url 'show_post' post.pk %}" title="">{{post.title}}</a></h4>
+                                        <p>{{post.content|truncatewords:60}}</p> <!-- фильтр для вывода 60 символов -->
                                         <small><a href="#" title=""><i class="fa fa-eye"></i>WATCHED</a></small>
                                         <small><a href="#" title="">{{post.created_on}}</a></small>
                                         <small><a href="#" title="">{{post.author.username}}</a></small>
