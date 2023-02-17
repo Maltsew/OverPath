@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from blog.models import Post, Category
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
-from django.http import HttpResponseNotFound, Http404
+from django.http import HttpResponseNotFound, Http404, HttpResponse
 
 
 def homepage(request):
@@ -27,6 +27,34 @@ def about(request):
         'about_msg': about_msg,
     }
     return render(request, 'blog/about.html', context=context)
+
+
+def categories(request):
+    context = {
+
+    }
+    return HttpResponse("Категории")
+
+
+def add_post(request):
+    context = {
+
+    }
+    return HttpResponse("Добавить пост")
+
+
+def login(request):
+    context = {
+
+    }
+    return HttpResponse("Авторизация")
+
+
+def show_post(request, post_id):
+    context = {
+
+    }
+    return HttpResponse(f"Отображение статьи с id = {post_id}")
 
 
 def pagenotfound(request, exception):
