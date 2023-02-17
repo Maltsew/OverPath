@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 # Модель профиля пользователя
@@ -19,7 +20,7 @@ class Profile(models.Model):
 
 # Модель категории - класс, объединяющий посты по схожему признаку
 class Category(models.Model):
-    title = models.CharField(max_length=20, verbose_name='Название категории')
+    title = models.CharField(max_length=20, verbose_name='Название категории', db_index=True)
     subtitle = models.CharField(max_length=20, verbose_name='Подзаголовок категории', null=True, blank=True)
     #thumbnail = models.ImageField()
 
@@ -40,7 +41,8 @@ class Post(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.PROTECT, verbose_name='Автор')
     updated_on = models.DateTimeField(auto_now=True, verbose_name='Дата обновления поста')
     content = models.TextField(verbose_name='Содержание поста')
-    categories = models.ManyToManyField(Category)
+    # categories = models.ManyToManyField(Category)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
     created_on = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания поста')
     #image = models.ImageField(null=True, blank=True, upload_to='images/')
 
@@ -56,3 +58,6 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('show_post', kwargs={'post_id': self.pk})
