@@ -57,6 +57,13 @@ def show_post(request, post_id):
     return HttpResponse(f"Отображение статьи с id = {post_id}")
 
 
+def show_category(request, cat_id):
+    context = {
+
+    }
+    return HttpResponse(f"Отображение категории с id = {cat_id}")
+
+
 def pagenotfound(request, exception):
     """ Отображение страницы ошибки в случае перехода на несуществующую страницу
      в режиме DEBUG=False"""
