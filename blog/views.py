@@ -34,6 +34,7 @@ def categories(request):
     categories_count = Category.objects.all().count()
     # множество всех категорий
     categories = Category.objects.all()
+
     context = {
         'title': 'Все категории',
         'categories_count': categories_count,
@@ -60,14 +61,18 @@ def show_post(request, post_id):
     context = {
 
     }
-    return HttpResponse(f"Отображение статьи с id = {post_id}")
+    return HttpResponse(f"Отображение поста с id = {post_id}")
 
 
 def show_category(request, cat_id):
-    context = {
+    posts = Post.objects.filter(category_id=cat_id)
 
+    # cats = Category.objects.all()
+    context = {
+        'posts': posts,
+        'cat_selected': cat_id,
     }
-    return HttpResponse(f"Отображение категории с id = {cat_id}")
+    return render(request, 'blog/posts_by_category.html', context=context)
 
 
 def pagenotfound(request, exception):
