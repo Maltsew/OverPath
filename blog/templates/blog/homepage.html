@@ -57,7 +57,6 @@
                                         <span class="bg-aqua"><a href="#" title="">CATEGORY</a></span>
                                         <h4><a href="{% url 'show_post' post.pk %}" title="">{{post.title}}</a></h4>
                                         <p>{{post.content|truncatewords:60}}</p> <!-- фильтр для вывода 60 символов -->
-                                        <small><a href="#" title=""><i class="fa fa-eye"></i>WATCHED</a></small>
                                         <small><a href="#" title="">{{post.created_on}}</a></small>
                                         <small><a href="#" title="">{{post.author.username}}</a></small>
                                     </div><!-- end meta -->
