@@ -1,0 +1,55 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block header %}
+        <div class="page-title wb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                        <h2><i class="fa fa-leaf bg-green"></i>Всего категорий: {{ categories_count }}</h2>
+                    </div><!-- end col -->
+                    <div class="col-lg-4 col-md-4 col-sm-12 hidden-xs-down hidden-sm-down">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Блог</a></li>
+                            <li class="breadcrumb-item active">{{title}}</li>
+                        </ol>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </div><!-- end page-title -->
+{% endblock header %}
+{% block content %}
+<section class="section wb">
+   <div class="container">
+       <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                    <div class="page-wrapper">
+                        <!-- ЛИСТ БЛОГОВ -->
+                        <div class="blog-list clearfix">
+                            {% for cat in categories %}
+                            <!-- ОТДЕЛЬНАЯ КАТЕГОРИЯ В СПИСКЕ КАТЕГОРИЙ -->
+                            <div class="blog-box row">
+                                <!-- КОЛОНКА С МЕДИА - ФОТО ДЛЯ КАТЕГОРИИ -->
+                                <div class="col-md-4">
+                                        <div class="post-media">
+                                            <a href="#" title="">
+                                                <!-- Для категорий - меньший размер изображения -->
+                                                <img src="{% static 'blog/images/upload/insta_01.jpeg' %}" alt="" class="img-fluid">
+                                                <div class="hovereffect"></div>
+                                            </a>
+                                        </div><!-- end media -->
+                                    </div><!-- end col -->
+                                <div class="blog-meta big-meta col-md-8">
+                                        <h4><a href="#" title="">{{ cat.title }}</a></h4>
+                                    {% if cat.subtitle %}
+                                        <p>{{ cat.subtitle }}</p>
+                                    {% else %}
+                                    <p></p>
+                                    {% endif %}
+                                    </div><!-- end meta -->
+                                </div><!-- end blog-box -->
+                            {% endfor %}
+                        </div><!-- end blog-list -->
+                    </div><!-- end page-wrapper -->
+   </div>
+</section>
+{% endblock content %}

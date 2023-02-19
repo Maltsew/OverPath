@@ -30,10 +30,16 @@ def about(request):
 
 
 def categories(request):
+    # всего категорий
+    categories_count = Category.objects.all().count()
+    # множество всех категорий
+    categories = Category.objects.all()
     context = {
-
+        'title': 'Все категории',
+        'categories_count': categories_count,
+        'categories': categories,
     }
-    return HttpResponse("Категории")
+    return render(request, 'blog/categories.html', context=context)
 
 
 def add_post(request):
