@@ -28,7 +28,7 @@ class Category(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('show_category', kwargs={'cat_id': self.pk})
+        return reverse('category', kwargs={'cat_id': self.pk})
 
     class Meta:
         verbose_name_plural = 'Категории'
@@ -60,4 +60,4 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('show_post', kwargs={'post_id': self.pk})
+        return reverse('post', kwargs={'post_id': self.pk})
