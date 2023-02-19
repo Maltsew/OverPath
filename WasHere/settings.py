@@ -79,7 +79,17 @@ WSGI_APPLICATION = 'WasHere.wsgi.application'
 
 
 if platform == 'darwin':
-    pass
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'a2095',
+            'USER': 'a2095',
+            'PASSWORD': '',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
+
 elif platform == "linux" or platform == "linux2":
     DATABASES = {
         'default': {
