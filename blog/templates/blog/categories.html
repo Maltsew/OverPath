@@ -39,7 +39,7 @@
                                         </div><!-- end media -->
                                     </div><!-- end col -->
                                 <div class="blog-meta big-meta col-md-8">
-                                        <h4><a href="#" title="">{{ cat.title }}</a></h4>
+                                        <h4><a href="{{ cat.get_absolute_url }}" title="">{{ cat.title }}</a></h4>
                                     {% if cat.subtitle %}
                                         <p>{{ cat.subtitle }}</p>
                                     {% else %}

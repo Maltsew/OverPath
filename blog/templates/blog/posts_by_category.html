@@ -1,0 +1,91 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block header %}
+{% endblock header %}
+{% block content %}
+<section class="section wb">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+
+                    <div class="page-wrapper">
+
+                        <!-- ЛИСТ БЛОГОВ -->
+                        <div class="blog-list clearfix">
+                            {% for post in posts %}
+                            <!-- если категория создана, а постов нет -->
+                            <!-- ОТДЕЛЬНЫЙ БЛОГ В СПИСКЕ БЛОГОВ -->
+                            <div class="blog-box row">
+                                <!-- КОЛОНКА С МЕДИА - ФОТО ИЗ БЛОГА -->
+                                <div class="col-md-4">
+                                        <div class="post-media">
+                                            <a href="#" title="">
+                                                <img src="{% static 'blog/images/upload/garden_sq_01.jpg' %}" alt="" class="img-fluid">
+                                                <div class="hovereffect"></div>
+                                            </a>
+                                        </div><!-- end media -->
+                                    </div><!-- end col -->
+                                <div class="blog-meta big-meta col-md-8">
+                                        <span class="bg-aqua"><a href="#" title="">CATEGORY</a></span>
+                                        <h4><a href="{% url 'post' post.pk %}" title="">{{post.title}}</a></h4>
+                                        <p>{{post.content|truncatewords:60}}</p> <!-- фильтр для вывода 60 символов -->
+                                        <small><a href="#" title="">{{post.created_on}}</a></small>
+                                        <small><a href="#" title="">{{post.author.username}}</a></small>
+                                    </div><!-- end meta -->
+                                </div><!-- end blog-box -->
+                            {% endfor %}
+                        </div><!-- end blog-list -->
+                    </div><!-- end page-wrapper -->
+                    <!-- SPACE FOR PAGINATOR -->
+                    <hr class="invis">
+                    <div class="row">
+                            <div class="col-md-12">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-start">
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+
+                            </div><!-- end col -->
+                        </div><!-- end row -->
+                    </div><!-- end col -->
+
+
+                            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                                <div class="sidebar">
+                                    <h2>Navigation</h2>
+                                    <div class="widget">
+                                <h2 class="widget-title">Recent Posts</h2>
+                                <div class="blog-list-widget">
+                                    <div class="list-group">
+                                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                            <div class="w-100 justify-content-between">
+                                                <img src="{% static 'blog/images/upload/garden_sq_01.jpg' %}" alt="" class="img-fluid float-left">
+                                                <h5 class="mb-1">1</h5>
+                                                <small>POST DATE</small>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="widget">
+                                <h2 class="widget-title">Popular Categories</h2>
+                                <div class="link-widget">
+                                    <ul>
+                                        <li><a href="#">CATEGORY1 <span>(21)</span></a></li>
+                                        <li><a href="#">CATEGORY2 <span>(15)</span></a></li>
+                                    </ul>
+                                </div><!-- end link-widget -->
+                            </div><!-- end widget -->
+                                </div><!-- end blog-list -->
+                            </div><!-- end widget -->
+                                </div><!-- end sidebar -->
+                            </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </section>
+{% endblock content %}
