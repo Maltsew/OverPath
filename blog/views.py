@@ -66,11 +66,11 @@ def show_post(request, post_id):
 
 def show_category(request, cat_id):
     posts = Post.objects.filter(category_id=cat_id)
-
-    # cats = Category.objects.all()
+    current_cat = posts[0].category
     context = {
         'posts': posts,
         'cat_selected': cat_id,
+        'current_cat': current_cat,
     }
     return render(request, 'blog/posts_by_category.html', context=context)
 

@@ -77,6 +77,8 @@ WSGI_APPLICATION = 'WasHere.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+""" при работе с postgres под macos требуется пакет psycopg2-binary(2.9.5)
+Данный пакет НЕ ПОДХОДИТ для работы под ubuntu, нужный пакет: psycopg2==2.7.4 --no-binary=psycopg2"""
 
 if platform == 'darwin':
     DATABASES = {

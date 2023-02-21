@@ -1,6 +1,10 @@
 {% extends "layout/base.html" %}
 {% load static %}
 
+    {% block title %}
+    <title>Домашняя</title>
+    {% endblock title %}
+
 {% block header %}
     <section class="section first-section">
             <div class="container-fluid">
@@ -14,7 +18,7 @@
                              <div class="shadoweffect">
                                 <div class="shadow-desc">
                                     <div class="blog-meta">
-                                        <span class="bg-aqua"><a href="#" title="">CATEGORY</a></span>
+                                        <span class="bg-aqua"><a href="{{ post.category.get_absolute_url }}" title="">{{ post.category.title }}</a></span>
                                         <h4><a href="{{ post.get_absolute_url }}" title="">{{post.title}}</a></h4>
                                         <small><a href="#" title="">{{post.created_on}}</a></small>
                                         <small><a href="#" title="">{{post.author.username}}</a></small>
@@ -54,7 +58,7 @@
                                         </div><!-- end media -->
                                     </div><!-- end col -->
                                 <div class="blog-meta big-meta col-md-8">
-                                        <span class="bg-aqua"><a href="#" title="">CATEGORY</a></span>
+                                        <span class="bg-aqua"><a href="{{ post.category.get_absolute_url }}" title="">{{ post.category.title }}</a></span>
                                         <h4><a href="{% url 'post' post.pk %}" title="">{{post.title}}</a></h4>
                                         <p>{{post.content|truncatewords:60}}</p> <!-- фильтр для вывода 60 символов -->
                                         <small><a href="#" title="">{{post.created_on}}</a></small>

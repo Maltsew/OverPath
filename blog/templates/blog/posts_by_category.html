@@ -1,7 +1,26 @@
 {% extends "layout/base.html" %}
 {% load static %}
 
+{% block title %}
+<title>Категории: {{current_cat}}</title>
+{% endblock title %}
 {% block header %}
+        <div class="page-title wb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                        <h2><i class="fa fa-leaf bg-green"></i>Записи в блоге по категории: {{ current_cat }}</h2>
+                    </div><!-- end col -->
+                    <div class="col-lg-4 col-md-4 col-sm-12 hidden-xs-down hidden-sm-down">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">Блог</a></li>
+                            <li class="breadcrumb-item">Категории</a></li>
+                            <li class="breadcrumb-item active">{{ current_cat }}</li>
+                        </ol>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </div><!-- end page-title -->
 {% endblock header %}
 {% block content %}
 <section class="section wb">
@@ -27,7 +46,6 @@
                                         </div><!-- end media -->
                                     </div><!-- end col -->
                                 <div class="blog-meta big-meta col-md-8">
-                                        <span class="bg-aqua"><a href="#" title="">CATEGORY</a></span>
                                         <h4><a href="{% url 'post' post.pk %}" title="">{{post.title}}</a></h4>
                                         <p>{{post.content|truncatewords:60}}</p> <!-- фильтр для вывода 60 символов -->
                                         <small><a href="#" title="">{{post.created_on}}</a></small>
