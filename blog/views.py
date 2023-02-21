@@ -16,11 +16,6 @@ def homepage(request):
     return render(request, 'blog/homepage.html', context=context)
 
 
-def base(request):
-    context = {}
-    return render(request, 'blog/post.html', context=context)
-
-
 def about(request):
     about_msg = 'ABOUT ME'
     context = {
@@ -58,10 +53,13 @@ def login(request):
 
 
 def show_post(request, post_id):
+    post = Post.objects.filter(id=post_id)
+    #new = post.values_list('title', 'author_id', 'author', 'content',)
     context = {
-
+        'post': post,
     }
-    return HttpResponse(f"Отображение поста с id = {post_id}")
+    return render(request, 'blog/post.html', context=context)
+    # return HttpResponse(f"Отображение поста с id = {post_id}")
 
 
 def show_category(request, cat_id):
