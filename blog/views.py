@@ -45,7 +45,9 @@ def login(request):
 
 
 def show_post(request, post_id):
-    post = Post.objects.filter(id=post_id)
+    # post = Post.objects.filter(id=post_id)
+    # надежнее, если нет постов вывод не пустого шаблона post, а страницы 404
+    post = get_object_or_404(Post, id=post_id)
     context = {
         'post': post,
     }

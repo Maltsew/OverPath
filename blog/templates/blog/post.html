@@ -11,15 +11,14 @@
          <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <div class="page-wrapper">
                <div class="blog-title-area">
-                   {% for p in post %}
-                  <span class="color-green"><a href="{% url 'category' p.category.pk %}" title="">{{ p.category }}</a></span>
-                  <h3>{{ p.title }}</h3>
+                  <span class="color-green"><a href="{% url 'category' post.category.pk %}" title="">{{ post.category }}</a></span>
+                  <h3>{{ post.title }}</h3>
 
                   <div class="blog-meta big-meta">
                       <!-- Все записи, созданные в конкретную дату -->
-                      <small><a href="#" title="">{{ p.created_on }}</a></small>
+                      <small><a href="#" title="">{{ post.created_on }}</a></small>
                       <!-- Профиль автора поста -->
-                      <small><a href="#" title="">{{ p.author.username }}</a></small>
+                      <small><a href="#" title="">{{ post.author.username }}</a></small>
                   </div><!-- end meta -->
                   <!-- POST PHOTO -->
                   <div class="single-post-media">
@@ -28,7 +27,7 @@
                   <!-- BLOCK CONTENT -->
                   <div class="blog-content">
                                 <div class="pp">
-                                   <p>{{ p.content }}</p>
+                                   <p>{{ post.content }}</p>
                                 </div><!-- end pp -->
                   </div><!-- end content -->
 
@@ -68,7 +67,6 @@
                                         </form>
                                     </div>
                                 </div>
-                                {% endfor %}
                             </div>
                         </div><!-- end page-wrapper -->
                     </div><!-- end col -->
