@@ -24,6 +24,7 @@ class Category(models.Model):
     title = models.CharField(max_length=20, verbose_name='Название категории', db_index=True)
     subtitle = models.CharField(max_length=20, verbose_name='Подзаголовок категории', null=True, blank=True)
     thumbnail = models.FileField(upload_to='category_uploads/cats/')
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
 
     def __str__(self):
         return self.title
@@ -47,6 +48,7 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания поста')
     # для поста 1 картинка - как превью, для отображения на домашней странице
     preview_image = models.FileField(upload_to='category_uploads/post_preview_upload/', verbose_name='Картинка для превью')
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
 
 
     class Meta:
@@ -64,7 +66,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('post', kwargs={'post_id': self.pk})
+        return reverse('post', kwargs={'post_slug': self.slug})
 
 
 class Images(models.Model):
