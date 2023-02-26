@@ -1,5 +1,6 @@
 {% extends "layout/base.html" %}
 {% load static %}
+{% load blog_tags %}
 
 
 {% block title %}
@@ -29,6 +30,7 @@
                     <div class="page-wrapper">
                         <!-- ЛИСТ БЛОГОВ -->
                         <div class="blog-list clearfix">
+                            {% get_all_categories as categories %}
                             {% for cat in categories %}
                             <!-- ОТДЕЛЬНАЯ КАТЕГОРИЯ В СПИСКЕ КАТЕГОРИЙ -->
                             <div class="blog-box row">

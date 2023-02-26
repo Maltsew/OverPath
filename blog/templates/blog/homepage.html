@@ -1,5 +1,6 @@
 {% extends "layout/base.html" %}
 {% load static %}
+{% load blog_tags %}
 
     {% block title %}
     <title>Домашняя</title>
@@ -9,13 +10,14 @@
     <section class="section first-section">
             <div class="container-fluid">
                 <div class="masonry-blog clearfix">
+                    {% get_posts filter=False as posts %}
                     {% for post in posts %}
                     <!-- БЛОК ПОСЛЕДНИХ ДОБАВЛЕННЫХ ПОСТОВ (или популярных) -->
-                    <!-- в блоке должно быть размещено 3 поста, обеспечить это из view -->
+                    <!-- с помощью простого польз. тэга get_posts с фильтром получаем 3 последних записи -->
                     <div class="left-side">
                         <div class="masonry-box post-media">
-                            {% if post.image %}
-                            <img src="{{post.image.url}}" alt="" class="img-fluid">
+                            {% if post.preview_image %}
+                            <img src="{{post.preview_image.url}}" alt="" class="img-fluid">
                             {% endif %}
                              <div class="shadoweffect">
                                 <div class="shadow-desc">
@@ -47,6 +49,7 @@
 
                         <!-- ЛИСТ БЛОГОВ -->
                         <div class="blog-list clearfix">
+                            {% get_posts filter=True as posts %}
                             {% for post in posts %}
                             <!-- ОТДЕЛЬНЫЙ БЛОГ В СПИСКЕ БЛОГОВ -->
                             <div class="blog-box row">
@@ -54,8 +57,8 @@
                                 <div class="col-md-4">
                                         <div class="post-media">
                                             <a href="{% url 'post' post.pk %}" title="">
-                                            {% if post.image %}
-                                            <img src="{{post.image.url}}" alt="" class="img-fluid">
+                                            {% if post.preview_image %}
+                                            <img src="{{post.preview_image.url}}" alt="" class="img-fluid">
                                             {% endif %}
                                                 <div class="hovereffect"></div>
                                             </a>
