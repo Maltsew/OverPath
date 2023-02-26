@@ -14,12 +14,14 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'subtitle')
     list_display_links = ('title',)
     search_fields = ('title', 'subtitle')
+    prepopulated_fields = {'slug': ('title',)}
 
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'created_on',)
     list_display_links = ('title',)
     search_fields = ('title', 'author', 'created_on')
+    prepopulated_fields = {'slug': ('title', 'author')}
 
 
 admin.site.register(Profile, ProfileAdmin)
