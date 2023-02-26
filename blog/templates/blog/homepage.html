@@ -14,7 +14,9 @@
                     <!-- в блоке должно быть размещено 3 поста, обеспечить это из view -->
                     <div class="left-side">
                         <div class="masonry-box post-media">
-                             <img src="{% static 'blog/images/upload/garden_cat_01.jpg' %}" alt="" class="img-fluid">
+                            {% if post.image %}
+                            <img src="{{post.image.url}}" alt="" class="img-fluid">
+                            {% endif %}
                              <div class="shadoweffect">
                                 <div class="shadow-desc">
                                     <div class="blog-meta">
@@ -51,8 +53,10 @@
                                 <!-- КОЛОНКА С МЕДИА - ФОТО ИЗ БЛОГА -->
                                 <div class="col-md-4">
                                         <div class="post-media">
-                                            <a href="#" title="">
-                                                <img src="{% static 'blog/images/upload/garden_sq_01.jpg' %}" alt="" class="img-fluid">
+                                            <a href="{% url 'post' post.pk %}" title="">
+                                            {% if post.image %}
+                                            <img src="{{post.image.url}}" alt="" class="img-fluid">
+                                            {% endif %}
                                                 <div class="hovereffect"></div>
                                             </a>
                                         </div><!-- end media -->

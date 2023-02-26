@@ -1,4 +1,5 @@
 {% extends "layout/base.html" %}
+{% load static %}
 
 {% block header %}
 
@@ -11,12 +12,14 @@
             <div class="page-wrapper">
                <div class="blog-title-area">
                    {% for p in post %}
-                  <span class="color-green"><a href="garden-category.html" title="">{{ p.category }}</a></span>
+                  <span class="color-green"><a href="{% url 'category' p.category.pk %}" title="">{{ p.category }}</a></span>
                   <h3>{{ p.title }}</h3>
 
                   <div class="blog-meta big-meta">
-                                    <small><a href="garden-single.html" title="">{{ p.created_on }}</a></small>
-                                    <small><a href="blog-author.html" title="">{{ p.author.username }}</a></small>
+                      <!-- Все записи, созданные в конкретную дату -->
+                      <small><a href="#" title="">{{ p.created_on }}</a></small>
+                      <!-- Профиль автора поста -->
+                      <small><a href="#" title="">{{ p.author.username }}</a></small>
                   </div><!-- end meta -->
                   <!-- POST PHOTO -->
                   <div class="single-post-media">
@@ -40,7 +43,7 @@
                                         <div class="comments-list">
                                             <div class="media">
                                                 <a class="media-left" href="#">
-                                                    <img src="upload/author.jpg" alt="" class="rounded-circle">
+                                                    <img src="{% static 'blog/images/upload/author.jpg' %}" alt="" class="rounded-circle">
                                                 </a>
                                                <div class="media-body">
                                                <h4 class="media-heading user_name"> COMMENTOR NAME <small> DAYS AGO </small></h4>
