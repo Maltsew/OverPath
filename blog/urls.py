@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.urls import path
 from blog.views import homepage, about, categories, add_post, login, show_post, show_category
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -26,3 +28,7 @@ urlpatterns = [
     path('post/<int:post_id>/', show_post, name='post'),
     path('category/<int:cat_id>/', show_category, name='category'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
