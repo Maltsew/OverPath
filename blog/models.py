@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.template.defaultfilters import slugify
 
 
 # Модель профиля пользователя
@@ -8,7 +9,7 @@ class Profile(models.Model):
     username = models.CharField(max_length=20, verbose_name='Ник пользователя')
     user_email = models.EmailField(verbose_name='эл. адрес пользователя')
     about_user = models.TextField(verbose_name='Короткое описание профиля')
-    # profile_image = models.ImageField(default='default.jpeg', upload_to='profile_pics', null=True, blank=True)
+    profile_image = models.FileField(upload_to='profile_uploads/profile_pics/')
 
     def __str__(self):
         return f'{self.username} {self.user_email}'
@@ -22,7 +23,7 @@ class Profile(models.Model):
 class Category(models.Model):
     title = models.CharField(max_length=20, verbose_name='Название категории', db_index=True)
     subtitle = models.CharField(max_length=20, verbose_name='Подзаголовок категории', null=True, blank=True)
-    #thumbnail = models.ImageField()
+    thumbnail = models.FileField(upload_to='category_uploads/cats/')
 
     def __str__(self):
         return self.title
@@ -44,7 +45,9 @@ class Post(models.Model):
     # categories = models.ManyToManyField(Category)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     created_on = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания поста')
-    #image = models.ImageField(null=True, blank=True, upload_to='images/')
+    # для поста 1 картинка - как превью, для отображения на домашней странице
+    preview_image = models.FileField(upload_to='category_uploads/post_preview_upload/', verbose_name='Картинка для превью')
+
 
     class Meta:
         ordering = ['-created_on']
@@ -53,7 +56,8 @@ class Post(models.Model):
         # Совместная комбинация названия и содержания поста должны быть уникальными в пределах таблицы в БД
         # (защита от дублирования постов)
         constraints = (
-            models.UniqueConstraint(fields=('title', 'content'), name='%(app_label)s_%(class)s_title_content_constraint'),
+            models.UniqueConstraint(fields=('title', 'content'),
+                                    name='%(app_label)s_%(class)s_title_content_constraint'),
         )
 
     def __str__(self):
@@ -61,3 +65,14 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_id': self.pk})
+
+
+class Images(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, default=None)
+    image = models.FileField(upload_to='category_uploads/post_content_upload/', verbose_name='Image')
+
+
+def get_image_filename(instance, filename):
+    title = instance.post.title
+    slug = slugify(title)
+    return "post_images/%s-%s" % (slug, filename)
