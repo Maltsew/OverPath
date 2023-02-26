@@ -3,6 +3,8 @@
 .AppleDouble
 .LSOverride
 
+# mediafiles
+media/
 # Icon must end with two \r
 Icon
 
