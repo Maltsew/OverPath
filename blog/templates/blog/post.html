@@ -1,8 +1,11 @@
 {% extends "layout/base.html" %}
 {% load static %}
 
-{% block header %}
 
+{% block title %}
+<title>{{page_title}}</title>
+{% endblock title %}
+{% block header %}
 {% endblock header %}
 {% block content %}
 <section class="section wb">
@@ -13,7 +16,6 @@
                <div class="blog-title-area">
                   <span class="color-green"><a href="{% url 'category' post.category.pk %}" title="">{{ post.category }}</a></span>
                   <h3>{{ post.title }}</h3>
-
                   <div class="blog-meta big-meta">
                       <!-- Все записи, созданные в конкретную дату -->
                       <small><a href="#" title="">{{ post.created_on }}</a></small>
@@ -21,13 +23,13 @@
                       <small><a href="#" title="">{{ post.author.username }}</a></small>
                   </div><!-- end meta -->
                   <!-- POST PHOTO -->
-                  <div class="single-post-media">
-                                <img src="upload/garden_single_01.jpg" alt="" class="img-fluid">
-                  </div><!-- end media -->
+                   <div class="single-post-media">
+                       <img src="{{post.preview_image.url}}" alt="" class="img-fluid">
+                   </div><!-- end media -->
                   <!-- BLOCK CONTENT -->
                   <div class="blog-content">
                                 <div class="pp">
-                                   <p>{{ post.content }}</p>
+                                   <p>{{ post.content|linebreaks }}</p><!-- linebreaks фильтр добавляет тэги обзацев -->
                                 </div><!-- end pp -->
                   </div><!-- end content -->
 

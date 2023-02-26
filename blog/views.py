@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from blog.models import Post, Category, Images, Profile
 from django.views.generic.edit import CreateView
@@ -10,7 +10,6 @@ from .forms import ImageForm, PostForm, CategoryForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
 
 
 def homepage(request):
@@ -44,17 +43,18 @@ def login(request):
     return HttpResponse("Авторизация")
 
 
-def show_post(request, post_id):
-    # post = Post.objects.filter(id=post_id)
+def show_post(request, post_slug):
     # надежнее, если нет постов вывод не пустого шаблона post, а страницы 404
-    post = get_object_or_404(Post, id=post_id)
+    post = get_object_or_404(Post, slug=post_slug)
     context = {
         'post': post,
+        'page_title': post.title,
     }
     return render(request, 'blog/post.html', context=context)
 
 
 def show_category(request, cat_id):
+    # get_object_or_404 (problem???)
     posts = Post.objects.filter(category_id=cat_id)
     current_cat = posts[0].category
     context = {
