@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from django.template.defaultfilters import slugify
 
 
 # Модель профиля пользователя
@@ -19,22 +18,22 @@ class Profile(models.Model):
         verbose_name = 'Профиль'
 
 
-# Модель категории - класс, объединяющий посты по схожему признаку
-class Category(models.Model):
-    title = models.CharField(max_length=20, verbose_name='Название категории', db_index=True)
-    subtitle = models.CharField(max_length=20, verbose_name='Подзаголовок категории', null=True, blank=True)
-    thumbnail = models.FileField(upload_to='category_uploads/cats/')
+# Модель тэга - класс, объединяющий посты по схожему признаку
+class Tag(models.Model):
+    title = models.CharField(max_length=20, verbose_name='Название категории', unique=True, db_index=True)
+    thumbnail = models.FileField(upload_to='tags_uploads/post_tags/')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('category', kwargs={'cat_id': self.pk})
+        return reverse('tag', kwargs={'tag_slug': self.slug})
+
 
     class Meta:
-        verbose_name_plural = 'Категории'
-        verbose_name = 'Категория'
+        verbose_name_plural = 'Тэги'
+        verbose_name = 'Тэг'
 
 
 # Модель "пост" - основной тип публикуемой информации в блоге
@@ -43,11 +42,12 @@ class Post(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.PROTECT, verbose_name='Автор')
     updated_on = models.DateTimeField(auto_now=True, verbose_name='Дата обновления поста')
     content = models.TextField(verbose_name='Содержание поста')
-    # categories = models.ManyToManyField(Category)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    tags = models.ManyToManyField(Tag)
     created_on = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания поста')
-    # для поста 1 картинка - как превью, для отображения на домашней странице
-    preview_image = models.FileField(upload_to='category_uploads/post_preview_upload/', verbose_name='Картинка для превью')
+    # Пока что, для превью фото выбирается отдельно
+    preview_image = models.FileField(upload_to='post_uploads/post_images/', verbose_name='Превью поста')
+    # А для наполнения поста
+    images = models.FileField(upload_to='post_uploads/post_images/', verbose_name='Картинки поста', null=True, blank=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
 
 
@@ -67,14 +67,3 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug': self.slug})
-
-
-class Images(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, default=None)
-    image = models.FileField(upload_to='category_uploads/post_content_upload/', verbose_name='Image')
-
-
-def get_image_filename(instance, filename):
-    title = instance.post.title
-    slug = slugify(title)
-    return "post_images/%s-%s" % (slug, filename)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blog.models import Profile, Post, Category
+from blog.models import Profile, Post, Tag
 
 
 # Register your models here.
@@ -10,10 +10,10 @@ class ProfileAdmin(admin.ModelAdmin):
     search_fields = ('user', 'username', 'user_email')
 
 
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subtitle')
-    list_display_links = ('title',)
-    search_fields = ('title', 'subtitle')
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('title', )
+    list_display_links = ('title', )
+    search_fields = ('title', )
     prepopulated_fields = {'slug': ('title',)}
 
 
@@ -25,5 +25,5 @@ class PostAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Category, CategoryAdmin)
+admin.site.register(Tag, TagAdmin)
 admin.site.register(Post, PostAdmin)
