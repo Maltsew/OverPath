@@ -1,12 +1,12 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
-from blog.models import Post, Category, Images, Profile
+from blog.models import Post, Tag, Profile
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.http import HttpResponseNotFound, Http404, HttpResponse
 
 from django.forms import modelformset_factory
-from .forms import ImageForm, PostForm, CategoryForm
+from .forms import PostForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -26,14 +26,14 @@ def about(request):
     return render(request, 'blog/about.html', context=context)
 
 
-def categories(request):
+def tags(request):
     # всего категорий
-    categories_count = Category.objects.all().count()
+    tags_count = Tag.objects.all().count()
     context = {
         'title': 'Все категории',
-        'categories_count': categories_count,
+        'categories_count': tags_count,
     }
-    return render(request, 'blog/categories.html', context=context)
+    return render(request, 'blog/tags.html', context=context)
 
 
 def login(request):
@@ -55,18 +55,31 @@ def show_post(request, post_slug):
 
 def show_category(request, cat_id):
     # get_object_or_404 (problem???)
-    posts = Post.objects.filter(category_id=cat_id)
-    current_cat = posts[0].category
     context = {
-        'posts': posts,
-        'cat_selected': cat_id,
-        'current_cat': current_cat,
     }
     return render(request, 'blog/posts_by_category.html', context=context)
 
 
 def add_post(request):
-    pass
+    ''' при работе с формой, которая предусматривает загрузку файлов (в т.ч. изображений)
+    необхожимо учесть следующее:
+    в шаблоне, который использует форму. необходимо использовать enctype="multipart/form-data"
+    и при обработке запроса с формой учитывать данные из объекта request:
+    request.FILES'''
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        print('before')
+        print(form)
+        if form.is_valid():
+            print('after')
+            try:
+                Post.objects.create(**form.cleaned_data)
+                return redirect('blog/')
+            except:
+                form.add_error(None, 'Error')
+    else:
+        form = PostForm()
+    return render(request, 'blog/add_post.html', {'form': form})
 
 
 def pagenotfound(request, exception):
