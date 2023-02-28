@@ -1,11 +1,13 @@
 {% extends "layout/base.html" %}
 {% load static %}
+{% load blog_tags %}
 
 
 {% block title %}
 <title>{{page_title}}</title>
 {% endblock title %}
 {% block header %}
+
 {% endblock header %}
 {% block content %}
 <section class="section wb">
@@ -14,8 +16,10 @@
          <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <div class="page-wrapper">
                <div class="blog-title-area">
-                  <span class="color-green"><a href="{% url 'category' post.category.pk %}" title="">{{ post.category }}</a></span>
+
                   <h3>{{ post.title }}</h3>
+
+
                   <div class="blog-meta big-meta">
                       <!-- Все записи, созданные в конкретную дату -->
                       <small><a href="#" title="">{{ post.created_on }}</a></small>
@@ -26,6 +30,10 @@
                    <div class="single-post-media">
                        <img src="{{post.preview_image.url}}" alt="" class="img-fluid">
                    </div><!-- end media -->
+                   {% for tag in post.tags.all  %}
+                  <span class="color-green"><a href="{{ tag.get_absolute_url }}" title="">{{ tag }}</a></span>
+                   {% endfor %}
+
                   <!-- BLOCK CONTENT -->
                   <div class="blog-content">
                                 <div class="pp">

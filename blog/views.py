@@ -28,10 +28,8 @@ def about(request):
 
 def tags(request):
     # всего категорий
-    tags_count = Tag.objects.all().count()
     context = {
-        'title': 'Все категории',
-        'categories_count': tags_count,
+        'title': 'Все тэги',
     }
     return render(request, 'blog/tags.html', context=context)
 
@@ -53,11 +51,13 @@ def show_post(request, post_slug):
     return render(request, 'blog/post.html', context=context)
 
 
-def show_category(request, cat_id):
-    # get_object_or_404 (problem???)
+def show_tag(request, tag_slug):
+    tag = get_object_or_404(Tag, slug=tag_slug)
     context = {
+        'tag': tag,
+        'page_title': tag.title,
     }
-    return render(request, 'blog/posts_by_category.html', context=context)
+    return render(request, 'blog/posts_by_tags.html', context=context)
 
 
 def add_post(request):

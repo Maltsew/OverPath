@@ -20,3 +20,8 @@ def get_posts(filter=True):
 @register.simple_tag()
 def get_all_tags():
     return Tag.objects.all()
+
+
+@register.simple_tag()
+def get_tags_count():
+    return Tag.objects.all().count()
