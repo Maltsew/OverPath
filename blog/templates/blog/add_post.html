@@ -8,10 +8,34 @@
 {% block header %}
 {% endblock header %}
 {% block content %}
-<form action="{% url 'add_post' %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="form-error">{{ form.non_field_errors }}</div>
-    {{ form.as_p }}
-    <button type="submit">Добавить</button>
-</form>
+<section class="section wb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                <div class="page-wrapper">
+                    <div class="custombox clearfix">
+                        <h4 class="small-title">Создание поста</h4>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form class="form-wrapper" action="{% url 'add_post' %}" method="post">
+                                    {% csrf_token %}
+                                    <div><p><h2><strong>Что вы хотите рассказать?</strong></h2></p></div>
+                                    <!-- Описание пунктов блога -->
+                                    {% for f in form %}
+                                        <!--<input type="text" class="form-control" placeholder="{{ f.label }}">-->
+                                        <p><h3><strong><label class="form-inline" for="{{ d.id_for_label }}">{{f.label}}: </label></strong></h2>{{ f }}</p>
+                                    {% endfor %}
+
+                                    <button type="submit" class="btn btn-primary">Опубликовать</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end page-wrapper -->
+            </div><!-- end col -->
+        </div><!-- end col -->
+    </div><!-- end row -->
+    </div><!-- end container -->
+</section>
+
 {% endblock content %}
