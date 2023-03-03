@@ -21,7 +21,51 @@
                     </div><!-- end col -->
                 </div><!-- end row -->
                 <hr class="invis">
-
             </div><!-- end container -->
         </div><!-- end page-title -->
 {% endblock header %}
+{% block content %}
+<section class="section wb">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+
+                    <div class="page-wrapper">
+
+                        <!-- ЛИСТ БЛОГОВ -->
+                        <div class="blog-list clearfix">
+                            {% for post in posts %}
+                            <!-- ОТДЕЛЬНЫЙ БЛОГ В СПИСКЕ БЛОГОВ -->
+                            <div class="blog-box row">
+                                <!-- КОЛОНКА С МЕДИА - ФОТО ИЗ БЛОГА -->
+                                <div class="col-md-4">
+                                        <div class="post-media">
+                                            <a href="{{ post.get_absolute_url }}" title="">
+                                            {% if post.preview_image %}
+                                            <img src="{{post.preview_image.url}}" alt="" class="img-fluid">
+                                            {% endif %}
+                                                <div class="hovereffect"></div>
+                                            </a>
+                                        </div><!-- end media -->
+                                    </div><!-- end col -->
+                                <div class="blog-meta big-meta col-md-8">
+                                    {% for tag in post.tags.all %}
+                                        <span class="bg-aqua"><a href="{{ tag.get_absolute_url }}" title="">{{ tag }}</a></span>
+                                    {% endfor %}
+                                        <h4><a href="{{ post.get_absolute_url }}" title="">{{post.title}}</a></h4>
+                                        <p>{{post.content|truncatewords:60}}</p> <!-- фильтр для вывода 60 символов -->
+                                        <small><a href="#" title="">{{post.created_on}}</a></small>
+                                        <small><a href="#" title="">{{post.author.username}}</a></small>
+                                    </div><!-- end meta -->
+                                </div><!-- end blog-box -->
+                            {% endfor %}
+                        </div><!-- end blog-list -->
+                    </div><!-- end page-wrapper -->
+                    <!-- SPACE FOR PAGINATOR -->
+            </div><!-- end container -->
+                <!-- block sidebar -->
+                {% include 'blog/sidebar.html' %}
+                <!-- endblock sidebar -->
+        </div>
+        </section>
+{% endblock content %}

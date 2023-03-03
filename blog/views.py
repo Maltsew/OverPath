@@ -53,7 +53,10 @@ def show_post(request, post_slug):
 
 def show_tag(request, tag_slug):
     tag = get_object_or_404(Tag, slug=tag_slug)
+    posts = Post.objects.filter(tags=tag)
+    print(posts)
     context = {
+        'posts': posts,
         'tag': tag,
         'page_title': tag.title,
     }
@@ -68,15 +71,9 @@ def add_post(request):
     request.FILES'''
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
-        print('before')
-        print(form)
         if form.is_valid():
-            print('after')
-            try:
-                Post.objects.create(**form.cleaned_data)
-                return redirect('blog/')
-            except:
-                form.add_error(None, 'Error')
+            form.save(commit=True)
+            return redirect('homepage')
     else:
         form = PostForm()
     return render(request, 'blog/add_post.html', {'form': form})
