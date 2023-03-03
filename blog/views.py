@@ -72,6 +72,7 @@ def add_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
+            print('valid_form')
             form.save(commit=True)
             return redirect('homepage')
     else:
