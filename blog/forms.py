@@ -24,5 +24,5 @@ class PostForm(forms.ModelForm):
         if p1 and p2:
             msg = 'Такой пост уже существует'
             self.add_error('title', msg)
-            raise forms.ValidationError(("Такой пост уже существует"), code='invalid')
+            raise forms.ValidationError(msg, code='invalid')
         return cleaned_data

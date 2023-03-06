@@ -4,7 +4,7 @@ from blog.models import Post, Tag, Profile
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.http import HttpResponseNotFound, Http404, HttpResponse
-
+from django.views.generic import ListView
 from django.forms import modelformset_factory
 from .forms import PostForm
 from django.contrib import messages
@@ -51,16 +51,20 @@ def show_post(request, post_slug):
     return render(request, 'blog/post.html', context=context)
 
 
-def show_tag(request, tag_slug):
-    tag = get_object_or_404(Tag, slug=tag_slug)
-    posts = Post.objects.filter(tags=tag)
-    print(posts)
-    context = {
-        'posts': posts,
-        'tag': tag,
-        'page_title': tag.title,
-    }
-    return render(request, 'blog/posts_by_tags.html', context=context)
+class BlogTags(ListView):
+    model = Post
+    template_name = 'blog/posts_by_tags.html'
+    context_object_name = 'posts'
+    allow_empty = False
+
+    def get_queryset(self):
+        return Post.objects.filter(tags__slug=self.kwargs['tag_slug'])
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #context['title'] = context['posts'][0]
+        context['tags'] = get_object_or_404(Tag, slug=self.kwargs['tag_slug'])
+        return context
 
 
 def add_post(request):
@@ -71,6 +75,7 @@ def add_post(request):
     request.FILES'''
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
+        print('form')
         if form.is_valid():
             print('valid_form')
             form.save(commit=True)

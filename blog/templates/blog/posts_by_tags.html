@@ -3,20 +3,20 @@
 {% load blog_tags %}
 
 {% block title %}
-<title>Категории: {{tag}}</title>
+<title>Категории: {{tags}}</title>
 {% endblock title %}
 {% block header %}
         <div class="page-title wb">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                        <h2><i class="fa fa-leaf bg-green"></i>Записи в блоге по категории: {{ tag }}</h2>
+                        <h2><i class="fa fa-leaf bg-green"></i>Найдены записи в блоге по категории: {{ tags }}</h2>
                     </div><!-- end col -->
                     <div class="col-lg-4 col-md-4 col-sm-12 hidden-xs-down hidden-sm-down">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">Блог</a></li>
                             <li class="breadcrumb-item">Категории</a></li>
-                            <li class="breadcrumb-item active">{{ tag }}</li>
+                            <li class="breadcrumb-item active">{{ tags }}</li>
                         </ol>
                     </div><!-- end col -->
                 </div><!-- end row -->
