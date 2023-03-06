@@ -4,7 +4,7 @@ from blog.models import Post, Tag, Profile
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.http import HttpResponseNotFound, Http404, HttpResponse
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from django.forms import modelformset_factory
 from .forms import PostForm
 from django.contrib import messages
@@ -82,22 +82,26 @@ class BlogTags(ListView):
         return context
 
 
-def add_post(request):
-    ''' при работе с формой, которая предусматривает загрузку файлов (в т.ч. изображений)
-    необхожимо учесть следующее:
-    в шаблоне, который использует форму. необходимо использовать enctype="multipart/form-data"
-    и при обработке запроса с формой учитывать данные из объекта request:
-    request.FILES'''
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
-        print('form')
-        if form.is_valid():
-            print('valid_form')
-            form.save(commit=True)
-            return redirect('homepage')
-    else:
-        form = PostForm()
-    return render(request, 'blog/add_post.html', {'form': form})
+class AddPost(CreateView):
+    form_class = PostForm
+    template_name = 'blog/add_post.html'
+
+
+# def add_post(request):
+#     ''' при работе с формой, которая предусматривает загрузку файлов (в т.ч. изображений)
+#     необхожимо учесть следующее:
+#     в шаблоне, который использует форму. необходимо использовать enctype="multipart/form-data"
+#     и при обработке запроса с формой учитывать данные из объекта request:
+#     request.FILES'''
+#     if request.method == 'POST':
+#         form = PostForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             post_slug = form.cleaned_data['slug']
+#             form.save(commit=True)
+#             return redirect('homepage')
+#     else:
+#         form = PostForm()
+#     return render(request, 'blog/add_post.html', {'form': form})
 
 
 def pagenotfound(request, exception):
