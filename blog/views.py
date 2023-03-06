@@ -4,7 +4,7 @@ from blog.models import Post, Tag, Profile
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.http import HttpResponseNotFound, Http404, HttpResponse
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.forms import modelformset_factory
 from .forms import PostForm
 from django.contrib import messages
@@ -41,20 +41,35 @@ def login(request):
     return HttpResponse("Авторизация")
 
 
-def show_post(request, post_slug):
-    # надежнее, если нет постов вывод не пустого шаблона post, а страницы 404
-    post = get_object_or_404(Post, slug=post_slug)
-    context = {
-        'post': post,
-        'page_title': post.title,
-    }
-    return render(request, 'blog/post.html', context=context)
+# def show_post(request, post_slug):
+#     # надежнее, если нет постов вывод не пустого шаблона post, а страницы 404
+#     post = get_object_or_404(Post, slug=post_slug)
+#     context = {
+#         'post': post,
+#         'page_title': post.title,
+#     }
+#     return render(request, 'blog/post.html', context=context)
+
+
+class ShowPost(DetailView):
+    model = Post
+    template_name = 'blog/post.html'
+    slug_url_kwarg = 'post_slug'
+    context_object_name = 'post'
+
+    def get_queryset(self):
+        return Post.objects.filter(slug=self.kwargs['post_slug'])
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class BlogTags(ListView):
     model = Post
     template_name = 'blog/posts_by_tags.html'
     context_object_name = 'posts'
+    # Запрещает показывать пустые списки - для обработки перехода по несуществующему слагу
     allow_empty = False
 
     def get_queryset(self):
