@@ -1,6 +1,5 @@
 {% extends "layout/base.html" %}
 {% load static %}
-{% load blog_tags %}
 
     {% block title %}
     <title>Домашняя</title>
@@ -10,8 +9,7 @@
     <section class="section first-section">
             <div class="container-fluid">
                 <div class="masonry-blog clearfix">
-                    {% get_posts filter=False as posts %}
-                    {% for post in posts %}
+                    {% for post in preview_tags %}
                     <!-- БЛОК ПОСЛЕДНИХ ДОБАВЛЕННЫХ ПОСТОВ (или популярных) -->
                     <!-- с помощью простого польз. тэга get_posts с фильтром получаем 3 последних записи -->
                     <div class="left-side">
@@ -51,7 +49,6 @@
 
                         <!-- ЛИСТ БЛОГОВ -->
                         <div class="blog-list clearfix">
-                            {% get_posts filter=True as posts %}
                             {% for post in posts %}
                             <!-- ОТДЕЛЬНЫЙ БЛОГ В СПИСКЕ БЛОГОВ -->
                             <div class="blog-box row">
@@ -79,24 +76,33 @@
                             {% endfor %}
                         </div><!-- end blog-list -->
                     </div><!-- end page-wrapper -->
-                    <!-- SPACE FOR PAGINATOR -->
                     <hr class="invis">
+                    <!-- SPACE FOR PAGINATOR -->
+                    {% if page_obj.has_other_pages %}
                     <div class="row">
                             <div class="col-md-12">
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination justify-content-start">
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">Next</a>
-                                        </li>
+                                        {% if page_obj.has_previous %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt</a></li>
+                                        {% endif %}
+                                        {% for page in paginator.page_range %}
+                                            {% if page_obj.number == page %}
+                                                <li class="page-item"><a class="page-link">{{ page }}</a></li>
+                                            {% elif page >= page_obj.number|add:-1 and page <= page_obj.number|add:1 %}
+                                                <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if page_obj.has_next %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&gt</a></li>
+                                        {% endif %}
                                     </ul>
                                 </nav>
-
                             </div><!-- end col -->
                         </div><!-- end row -->
                     </div><!-- end col -->
+                    {% endif %}
+                    <!-- END SPACE FOR PAGINATOR -->
                 <!-- block sidebar -->
                 {% include 'blog/sidebar.html' %}
             <!-- endblock sidebar -->

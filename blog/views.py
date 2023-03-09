@@ -12,10 +12,18 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
 
-def homepage(request):
-    context = {
-    }
-    return render(request, 'blog/homepage.html', context=context)
+class ShowHomepage(ListView):
+    paginate_by = 4
+    model = Post
+    template_name = 'blog/homepage.html'
+    context_object_name = 'posts'
+    allow_empty = False
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # временно - показ 3 последних постов
+        context['preview_tags'] = Post.objects.all()[:3]
+        return context
 
 
 def about(request):
@@ -85,23 +93,6 @@ class BlogTags(ListView):
 class AddPost(CreateView):
     form_class = PostForm
     template_name = 'blog/add_post.html'
-
-
-# def add_post(request):
-#     ''' при работе с формой, которая предусматривает загрузку файлов (в т.ч. изображений)
-#     необхожимо учесть следующее:
-#     в шаблоне, который использует форму. необходимо использовать enctype="multipart/form-data"
-#     и при обработке запроса с формой учитывать данные из объекта request:
-#     request.FILES'''
-#     if request.method == 'POST':
-#         form = PostForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             post_slug = form.cleaned_data['slug']
-#             form.save(commit=True)
-#             return redirect('homepage')
-#     else:
-#         form = PostForm()
-#     return render(request, 'blog/add_post.html', {'form': form})
 
 
 def pagenotfound(request, exception):
