@@ -6,10 +6,14 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseNotFound, Http404, HttpResponse
 from django.views.generic import ListView, DetailView, CreateView
 from django.forms import modelformset_factory
-from .forms import PostForm
+from .forms import PostForm, ProfileRegistrationForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import UserCreationForm
 
 
 class ShowHomepage(ListView):
@@ -22,7 +26,7 @@ class ShowHomepage(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         # временно - показ 3 последних постов
-        context['preview_tags'] = Post.objects.all()[:3]
+        context['preview_posts'] = Post.objects.all()[:3]
         return context
 
 
@@ -93,6 +97,12 @@ class BlogTags(ListView):
 class AddPost(CreateView):
     form_class = PostForm
     template_name = 'blog/add_post.html'
+
+
+class RegisterProfile(CreateView):
+    form_class = ProfileRegistrationForm
+    template_name = 'blog/profile_register.html'
+    success_url = reverse_lazy('login')
 
 
 def pagenotfound(request, exception):

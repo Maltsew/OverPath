@@ -2,7 +2,9 @@
 from django.forms import ModelForm
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django import forms
-from .models import Post
+from .models import Post, Profile
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
 class PostForm(forms.ModelForm):
@@ -26,3 +28,9 @@ class PostForm(forms.ModelForm):
             self.add_error('title', msg)
             raise forms.ValidationError(msg, code='invalid')
         return cleaned_data
+
+
+class ProfileRegistrationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2')
