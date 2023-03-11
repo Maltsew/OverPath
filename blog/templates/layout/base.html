@@ -52,17 +52,22 @@
 <body>
 <div id="wrapper">
             <div class="topbar-section">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-6 hidden-xs-down">
-                        <div class="topsocial">
-                            <h4><a href="{% url 'register' %}">Регистрация</a></h4>
-                        </div><!-- end social -->
-                    </div><!-- end col -->
-                    <div class="col-lg-4 hidden-md-down">
-                    </div><!-- end col -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-6 hidden-xs-down">
+                            <div class="topsocial">
+                            </div><!-- end social -->
+                        </div><!-- end col -->
+                        <div class="col-lg-4 hidden-md-down">
+                        </div><!-- end col -->
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                            <div class="topsearch text-right">
+                                <h5><a href="{% url 'register' %}">Регистрация</a>&emsp;<a href="{% url 'login' %}">Войти</a></h5></h5>
+                            </div>
+                        </div><!-- end col -->
                             <!-- <a data-toggle="collapse" href="#" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-search"></i> Search</a> -->
-                            <a href="{% url 'register' %}">Регистрация</a>
-                </div><!-- end row -->
+                    </div><!-- end row -->
+                </div>
             </div><!-- end topbar -->
         <div class="header-section">
             <div class="container">
