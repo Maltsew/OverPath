@@ -1,17 +1,16 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 # Модель профиля пользователя
 class Profile(models.Model):
-    name = models.CharField(max_length=20, verbose_name='Имя пользователя')
-    username = models.CharField(max_length=20, verbose_name='Ник пользователя')
-    user_email = models.EmailField(verbose_name='эл. адрес пользователя')
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     about_user = models.TextField(verbose_name='Короткое описание профиля')
     profile_image = models.FileField(upload_to='profile_uploads/profile_pics/')
 
     def __str__(self):
-        return f'{self.username} {self.user_email}'
+        return f'{self.user.username} {self.user.email}'
 
     class Meta:
         verbose_name_plural = 'Профили'

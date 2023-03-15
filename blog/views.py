@@ -10,6 +10,7 @@ from .forms import PostForm, ProfileRegistrationForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -44,23 +45,6 @@ def tags(request):
         'title': 'Все тэги',
     }
     return render(request, 'blog/tags.html', context=context)
-
-
-def login(request):
-    context = {
-
-    }
-    return HttpResponse("Авторизация")
-
-
-# def show_post(request, post_slug):
-#     # надежнее, если нет постов вывод не пустого шаблона post, а страницы 404
-#     post = get_object_or_404(Post, slug=post_slug)
-#     context = {
-#         'post': post,
-#         'page_title': post.title,
-#     }
-#     return render(request, 'blog/post.html', context=context)
 
 
 class ShowPost(DetailView):
@@ -103,6 +87,14 @@ class RegisterProfile(CreateView):
     form_class = ProfileRegistrationForm
     template_name = 'blog/profile_register.html'
     success_url = reverse_lazy('login')
+
+
+class LoginProfile(LoginView):
+    form_class = ProfileRegistrationForm
+    template_name = 'blog/login.html'
+
+    def get_success_url(self):
+        return reverse_lazy('homepage')
 
 
 def pagenotfound(request, exception):

@@ -5,6 +5,7 @@ from django import forms
 from .models import Post, Profile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 
 
 class PostForm(forms.ModelForm):
@@ -30,7 +31,6 @@ class PostForm(forms.ModelForm):
         return cleaned_data
 
 
-class ProfileRegistrationForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ('username', 'password1', 'password2')
+class ProfileRegistrationForm(AuthenticationForm):
+    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
