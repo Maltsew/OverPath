@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from blog.views import about, tags, AddPost, ShowPost, BlogTags, ShowHomepage, register, LoginProfile, profile_logout
+from blog.views import about, tags, create_post, ShowPost, BlogTags, ShowHomepage, register, LoginProfile, profile_logout
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -23,7 +23,7 @@ urlpatterns = [
     path('', ShowHomepage.as_view(), name='homepage'),
     path('about/', about, name='about'),
     path('tags/', tags, name='tags'),
-    path('add_post/', AddPost.as_view(), name='add_post'),
+    path('add_post/', create_post, name='add_post'),
     path('register/', register, name='register'),
     path('login/', LoginProfile.as_view(), name='login'),
     path('logout/', profile_logout, name='logout'),

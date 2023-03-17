@@ -82,10 +82,25 @@ class BlogTags(ListView):
         return context
 
 
-class AddPost(CreateView):
-    form_class = PostForm
-    template_name = 'blog/add_post.html'
+# class AddPost(LoginRequiredMixin, CreateView):
+#     form_class = PostForm
+#     template_name = 'blog/add_post.html'
 
+
+def create_post(request):
+    if request.method == 'POST':
+        post_form = PostForm(request.POST, request.FILES)
+        if post_form.is_valid():
+            post_form.save(commit=False)
+            post_form.instance.author = request.user
+            post_form.save()
+            messages.success(request, 'Опубликовано')
+            return redirect('homepage')
+        else:
+            messages.error(request, 'Ошибка публикации')
+    else:
+        post_form = PostForm()
+    return render(request, 'blog/add_post.html', context={'form': post_form})
 
 # class RegisterProfile(CreateView):
 #     form_class = ProfileRegistrationForm
@@ -115,7 +130,6 @@ def register(response):
     else:
         form = ProfileRegistrationForm()
     return render(response, 'blog/profile_register.html', {'form': form})
-
 
 
 class LoginProfile(LoginView):

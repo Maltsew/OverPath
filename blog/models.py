@@ -9,12 +9,12 @@ from django.db.models.signals import post_save
 
 # Модель профиля пользователя
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     about_user = models.TextField(verbose_name='Короткое описание профиля')
     profile_image = models.FileField(upload_to='profile_uploads/profile_pics/')
 
     def __str__(self):
-        return f'{self.user.username} {self.user.email}'
+        return f'{self.user.username}'
 
     class Meta:
         verbose_name_plural = 'Профили'
@@ -49,7 +49,7 @@ class Tag(models.Model):
 # Модель "пост" - основной тип публикуемой информации в блоге
 class Post(models.Model):
     title = models.CharField(max_length=200, verbose_name='Название поста')
-    author = models.ForeignKey(Profile, on_delete=models.PROTECT, verbose_name='Автор')
+    author = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='Автор')
     updated_on = models.DateTimeField(auto_now=True, verbose_name='Дата обновления поста')
     content = models.TextField(verbose_name='Содержание поста')
     tags = models.ManyToManyField(Tag)

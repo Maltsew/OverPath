@@ -57,13 +57,13 @@
                                 <h4 class="small-title">Об авторе</h4>
                                 <div class="row">
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                        <img src="{{ post.author.profile_image.url }}" alt="" class="img-fluid rounded-circle">
+                                        <img src="{{ post.author.profile.profile_image.url }}" alt="" class="img-fluid rounded-circle">
                                     </div><!-- end col -->
 
                                     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <!-- <h4><a href="#">AUTHOR</a></h4> -->
-                                        <h4>{{ post.author.username }}</h4>
-                                        <p>{{ post.author.about_user }}</p>
+                                        <h4>{{ post.author.profile }}</h4>
+                                        <p>{{ post.author.profile.about_user }}</p>
                                         <div class="topsocial">
                                             <!-- user social links -->
                                             <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook"></i></a>

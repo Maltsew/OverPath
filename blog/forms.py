@@ -11,7 +11,7 @@ from django.contrib.auth.forms import AuthenticationForm
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'author', 'content', 'tags', 'preview_image', 'images', 'slug']
+        fields = ['title', 'content', 'tags', 'preview_image', 'images', 'slug']
         widgets = {
             'title': forms.TextInput(attrs={'size': 80}),
             'content': forms.Textarea(attrs={'cols': 79, 'rows': 20}),

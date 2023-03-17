@@ -96,14 +96,13 @@
                                 <a class="nav-link color-green-hover" href="{% url 'homepage' %}">Домашняя</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="{% url 'login' %}">Войти</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link color-green-hover" href="{% url 'tags' %}">Категории</a>
                             </li>
+                            {% if request.user.is_authenticated %}
                             <li class="nav-item">
                                 <a class="nav-link color-green-hover" href="{% url 'add_post' %}">Добавить пост</a>
                             </li>
+                            {% endif %}
                             <li class="nav-item">
                                 <a class="nav-link color-green-hover" href="{% url 'about' %}">О сайте</a>
                             </li>
