@@ -31,6 +31,38 @@ class PostForm(forms.ModelForm):
         return cleaned_data
 
 
-class ProfileRegistrationForm(AuthenticationForm):
+class ProfileLoginForm(AuthenticationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
+
+
+class ProfileRegistrationForm(UserCreationForm):
+    about_user = forms.CharField(label='Расскажите о себе', max_length=200,
+                                 widget=forms.Textarea(attrs={'cols': 60, 'rows': 10}))
+    profile_image = forms.FileField(label='Добавьте аватар')
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2')
+        widgets = {
+            'first_name': forms.TextInput(attrs={'size': 60}),
+            'last_name': forms.TextInput(attrs={'size': 60}),
+            'username': forms.TextInput(attrs={'size': 60}),
+            'email': forms.TextInput(attrs={'size': 60}),
+            'password1': forms.PasswordInput(),
+            'password1': forms.PasswordInput(),
+        }
+
+
+
+    def clean_about_user(self):
+        about_user = self.cleaned_data['about_user']
+        return about_user
+
+    def clean_profile_image(self):
+        profile_image = self.cleaned_data['profile_image']
+        return profile_image
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        return cleaned_data

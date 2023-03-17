@@ -1,3 +1,6 @@
+import random
+import string
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from blog.models import Post, Tag, Profile
@@ -6,11 +9,12 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseNotFound, Http404, HttpResponse
 from django.views.generic import ListView, DetailView, CreateView
 from django.forms import modelformset_factory
-from .forms import PostForm, ProfileRegistrationForm
+from .forms import PostForm, ProfileRegistrationForm, ProfileLoginForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from django.contrib.auth import logout
 
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -22,7 +26,7 @@ class ShowHomepage(ListView):
     model = Post
     template_name = 'blog/homepage.html'
     context_object_name = 'posts'
-    allow_empty = False
+    # allow_empty = False
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -83,18 +87,48 @@ class AddPost(CreateView):
     template_name = 'blog/add_post.html'
 
 
-class RegisterProfile(CreateView):
-    form_class = ProfileRegistrationForm
-    template_name = 'blog/profile_register.html'
-    success_url = reverse_lazy('login')
+# class RegisterProfile(CreateView):
+#     form_class = ProfileRegistrationForm
+#     template_name = 'blog/profile_register.html'
+#     success_url = reverse_lazy('login')
+#
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         return context
+
+
+def register(response):
+    if response.method == 'POST':
+        form = ProfileRegistrationForm(response.POST, response.FILES)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db()
+            user.profile.about_user = form.cleaned_data.get('about_user')
+            user.profile.profile_image = form.cleaned_data.get('profile_image')
+            user.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            #user = authenticate(username=username, password=password)
+            #login(response, user)
+
+            return redirect('login')
+    else:
+        form = ProfileRegistrationForm()
+    return render(response, 'blog/profile_register.html', {'form': form})
+
 
 
 class LoginProfile(LoginView):
-    form_class = ProfileRegistrationForm
+    form_class = ProfileLoginForm
     template_name = 'blog/login.html'
 
     def get_success_url(self):
         return reverse_lazy('homepage')
+
+
+def profile_logout(request):
+    logout(request)
+    return redirect('login')
 
 
 def pagenotfound(request, exception):

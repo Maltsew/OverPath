@@ -62,7 +62,11 @@
                         </div><!-- end col -->
                         <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                             <div class="topsearch text-right">
-                                <h5><a href="{% url 'register' %}">Регистрация</a>&emsp;<a href="{% url 'login' %}">Войти</a></h5></h5>
+                                {% if request.user.is_authenticated %}
+                                <h5>{{ user.username }}</a>&emsp;<a href="{% url 'logout' %}">Выйти</a></h5>
+                                {% else %}
+                                <h5><a href="{% url 'register' %}">Регистрация</a>&emsp;<a href="{% url 'login' %}">Войти</a></h5>
+                                {% endif %}
                             </div>
                         </div><!-- end col -->
                             <!-- <a data-toggle="collapse" href="#" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-search"></i> Search</a> -->
