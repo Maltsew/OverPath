@@ -86,7 +86,7 @@ class BlogTags(ListView):
 #     form_class = PostForm
 #     template_name = 'blog/add_post.html'
 
-
+@login_required
 def create_post(request):
     if request.method == 'POST':
         post_form = PostForm(request.POST, request.FILES)
