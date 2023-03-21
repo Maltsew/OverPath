@@ -9,12 +9,14 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseNotFound, Http404, HttpResponse
 from django.views.generic import ListView, DetailView, CreateView
 from django.forms import modelformset_factory
-from .forms import PostForm, ProfileRegistrationForm, ProfileLoginForm
+from .forms import PostForm, ProfileRegistrationForm, ProfileLoginForm, AddTagForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout
+from django.http import HttpResponseBadRequest, JsonResponse
+import json
 
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -90,6 +92,7 @@ class BlogTags(ListView):
 def create_post(request):
     if request.method == 'POST':
         post_form = PostForm(request.POST, request.FILES)
+        tags_form = AddTagForm(request.POST, request.FILES)
         if post_form.is_valid():
             post_form.save(commit=False)
             post_form.instance.author = request.user
@@ -100,7 +103,8 @@ def create_post(request):
             messages.error(request, 'Ошибка публикации')
     else:
         post_form = PostForm()
-    return render(request, 'blog/add_post.html', context={'form': post_form})
+        tags_form = AddTagForm()
+    return render(request, 'blog/add_post.html', context={'form': post_form, 'tags_form': tags_form})
 
 # class RegisterProfile(CreateView):
 #     form_class = ProfileRegistrationForm
@@ -143,6 +147,19 @@ class LoginProfile(LoginView):
 def profile_logout(request):
     logout(request)
     return redirect('login')
+
+
+def todos(request):
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
+    if is_ajax:
+        if request.method == 'GET':
+            tags = list(Tag.objects.all().values())
+            print(tags)
+            return JsonResponse({'context': tags})
+        return JsonResponse({'status': 'Invalid request'}, status=400)
+    else:
+        return HttpResponseBadRequest('Invalid request')
 
 
 def pagenotfound(request, exception):

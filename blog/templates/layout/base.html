@@ -158,6 +158,8 @@
     <script src="{% static 'blog/js/tether.min.js' %}"></script>
     <script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'blog/js/custom.js' %}"></script>
+    {% block javascript %}{% endblock %}
+    <script src="{% static 'blog/js/main.js' %}"></script>
 
 </body>
 </html>

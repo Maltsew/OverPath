@@ -39,9 +39,8 @@
                                     <!-- Описание пунктов блога -->
                                     {% for f in form %}
                                         <!--<input type="text" class="form-control" placeholder="{{ f.label }}">-->
-                                        <p><h3><strong><label class="form-inline" for="{{ d.id_for_label }}">{{f.label}}: </label></strong></h3>{{ f }}</p>
+                                        <p><h3><strong><label class="form-inline" for="{{ f.id_for_label }}">{{f.label}}: </label></strong></h3>{{ f }}</p>
                                     {% endfor %}
-
                                     <button type="submit" class="btn btn-primary">Опубликовать</button>
                                 </form>
                             </div>
@@ -54,5 +53,36 @@
     </div><!-- end row -->
     </div><!-- end container -->
 </section>
+<section>
+  <h1>Todos</h1>
 
+  <hr><br><br>
+
+  <div class="row">
+    <div class="col">
+      <div class="header">
+        <h2>GET</h2>
+      </div>
+      <button id="getTodos">Read</button>
+      <p><ul id="todoList"></ul></p>
+    </div>
+  </div>
+</section>
 {% endblock content %}
+{% block javascript %}
+<script>
+  // fetch api examples
+  (function() {
+
+    console.log("ready!");
+
+    const allTodosUrl = "{% url 'todos' %}";
+
+     // GET all todos
+    const readButton = document.getElementById("getTodos");
+    readButton.addEventListener("click", () => {
+      getAllTodos(allTodosUrl);
+    });
+})();
+</script>
+{% endblock %}

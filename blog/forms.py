@@ -2,16 +2,18 @@
 from django.forms import ModelForm
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django import forms
-from .models import Post, Profile
+from .models import Post, Profile, Tag
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from betterforms.multiform import MultiModelForm
 
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'tags', 'preview_image', 'images', 'slug']
+        fields = ['title', 'content', 'preview_image', 'images', 'slug']
+        exclude = ('tags',)
         widgets = {
             'title': forms.TextInput(attrs={'size': 80}),
             'content': forms.Textarea(attrs={'cols': 79, 'rows': 20}),
@@ -29,6 +31,12 @@ class PostForm(forms.ModelForm):
             self.add_error('title', msg)
             raise forms.ValidationError(msg, code='invalid')
         return cleaned_data
+
+
+class AddTagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = ['title', 'thumbnail', 'slug']
 
 
 class ProfileLoginForm(AuthenticationForm):
