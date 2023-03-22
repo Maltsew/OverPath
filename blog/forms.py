@@ -2,7 +2,7 @@
 from django.forms import ModelForm
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django import forms
-from .models import Post, Profile
+from .models import Post, Profile, Tag
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
@@ -15,6 +15,7 @@ class PostForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'size': 80}),
             'content': forms.Textarea(attrs={'cols': 79, 'rows': 20}),
+            'tags': forms.SelectMultiple(attrs={'size': 10, 'class': 'chosen'}),
         }
 
     def clean(self):

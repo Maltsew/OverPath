@@ -52,7 +52,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='Автор')
     updated_on = models.DateTimeField(auto_now=True, verbose_name='Дата обновления поста')
     content = models.TextField(verbose_name='Содержание поста')
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, verbose_name='Тэги поста')
     created_on = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания поста')
     # Пока что, для превью фото выбирается отдельно
     preview_image = models.FileField(upload_to='post_uploads/post_images/', verbose_name='Превью поста')
