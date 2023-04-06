@@ -38,20 +38,8 @@
                                     <div><p><h2><strong>Что вы хотите рассказать?</strong></h2></p></div>
                                     <!-- Описание пунктов блога -->
                                     {% for f in form %}
-                                    {% if f.label == 'Тэги поста' %}
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12"><h3><strong><label class="form-inline" for="{{ d.id_for_label }}">{{f.label}}: </label></strong></h3>{{ f }}</div>
-                                        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12"><h3><strong>Не нашли нужный? Создайте свой!</strong></h3></div>
-                                        <form class="form-inline">
-                                        <input type="text" class="form-control" placeholder="Укажите категорию">
-                                        <button type="submit" class="btn btn-primary">Добавить<i class="fa fa-envelope-open-o"></i></button>
-                                    </form>
-                                    </div>
-                                    {% else %}
                                         <p><h3><strong><label class="form-inline" for="{{ d.id_for_label }}">{{f.label}}: </label></strong></h3>{{ f }}</p>
-                                    {% endif %}
                                     {% endfor %}
-
                                     <button type="submit" class="btn btn-primary">Опубликовать</button>
                                 </form>
                             </div>

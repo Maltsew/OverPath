@@ -6,16 +6,30 @@ from .models import Post, Profile, Tag
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from django.utils.text import slugify
+
+# Перевод слагов на латиницу
+from transliterate import translit, get_available_language_codes
 
 
 class PostForm(forms.ModelForm):
+    """ Форма создания нового поста
+    model: Post
+    fields: title, content, preview_image, images, slug
+    widgets:
+        title: forms.TextInput
+        content: forms.Textarea
+    tags: Тэги добавляются к посту как get_or_create тэгов из модели Tag. Тэгов может быть введено несколько,
+    в таком случае они разделяются запятой и поочередно добавляются к посту
+    """
+    tags = forms.CharField(label='Категории поста', max_length=200,
+                                 widget=forms.TextInput(attrs={'size': 80}))
     class Meta:
         model = Post
-        fields = ['title', 'content', 'tags', 'preview_image', 'images', 'slug']
+        fields = ['title', 'content', 'preview_image', 'images']
         widgets = {
             'title': forms.TextInput(attrs={'size': 80}),
             'content': forms.Textarea(attrs={'cols': 79, 'rows': 20}),
-            'tags': forms.SelectMultiple(attrs={'size': 10, 'class': 'chosen'}),
         }
 
     def clean(self):
@@ -30,6 +44,11 @@ class PostForm(forms.ModelForm):
             self.add_error('title', msg)
             raise forms.ValidationError(msg, code='invalid')
         return cleaned_data
+
+    def clean_tags(self):
+        cleaned_data = self.cleaned_data
+        tags = cleaned_data['tags']
+        return tags
 
 
 class ProfileLoginForm(AuthenticationForm):

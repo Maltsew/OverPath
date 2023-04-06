@@ -32,7 +32,7 @@ def create_profile(sender, instance, created, **kwargs):
 class Tag(models.Model):
     title = models.CharField(max_length=20, verbose_name='Название категории', unique=True, db_index=True)
     thumbnail = models.FileField(upload_to='tags_uploads/post_tags/')
-    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL', allow_unicode=True)
 
     def __str__(self):
         return self.title
@@ -58,7 +58,7 @@ class Post(models.Model):
     preview_image = models.FileField(upload_to='post_uploads/post_images/', verbose_name='Превью поста')
     # А для наполнения поста
     images = models.FileField(upload_to='post_uploads/post_images/', verbose_name='Картинки поста', null=True, blank=True)
-    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL', allow_unicode=True)
 
 
     class Meta:
