@@ -23,7 +23,9 @@ class PostForm(forms.ModelForm):
     в таком случае они разделяются запятой и поочередно добавляются к посту
     """
     tags = forms.CharField(label='Категории поста', max_length=200,
-                                 widget=forms.TextInput(attrs={'size': 80}))
+                                 widget=forms.TextInput(attrs={
+                                     'placeholder': 'Если категорий несколько, укажите их через пробел и запятую',
+                                     'size': 80}))
     class Meta:
         model = Post
         fields = ['title', 'content', 'preview_image', 'images']

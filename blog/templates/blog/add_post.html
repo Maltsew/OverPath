@@ -38,7 +38,7 @@
                                     <div><p><h2><strong>Что вы хотите рассказать?</strong></h2></p></div>
                                     <!-- Описание пунктов блога -->
                                     {% for f in form %}
-                                        <p><h3><strong><label class="form-inline" for="{{ d.id_for_label }}">{{f.label}}: </label></strong></h3>{{ f }}</p>
+                                        <p><h3><strong><label class="form-inline" for="{{ d.id_for_label  }}">{{f.label}}: </label></strong></h3>{{ f }} </p>
                                     {% endfor %}
                                     <button type="submit" class="btn btn-primary">Опубликовать</button>
                                 </form>
