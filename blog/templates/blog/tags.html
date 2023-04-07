@@ -27,6 +27,7 @@
 <section class="section wb">
    <div class="container">
        <div class="row">
+           <a href="{{ tag.get_absolute_url }}" title="">{{ tag.title }}</a>
        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                     <div class="page-wrapper">
                         <!-- ЛИСТ БЛОГОВ -->
@@ -35,21 +36,12 @@
                             {% for tag in tags %}
                             <!-- ОТДЕЛЬНАЯ КАТЕГОРИЯ В СПИСКЕ КАТЕГОРИЙ -->
                             <div class="blog-box row">
-                                <!-- КОЛОНКА С МЕДИА - ФОТО ДЛЯ КАТЕГОРИИ -->
-                                <div class="col-md-4">
-                                        <div class="post-media">
-                                            <a href="#" title="">
-                                                <!-- Для категорий - меньший размер изображения -->
-                                                <img src="{% static 'blog/images/upload/insta_01.jpeg' %}" alt="" class="img-fluid">
-                                                <div class="hovereffect"></div>
-                                            </a>
-                                        </div><!-- end media -->
-                                    </div><!-- end col -->
+                                <h4><a href="{{ tag.get_absolute_url }}" title="">{{ tag.title }}</a></h4>
 
+                                <!-- КОЛОНКА С МЕДИА - ФОТО ДЛЯ КАТЕГОРИИ -->
                                 <div class="blog-meta big-meta col-md-8">
-                                        <h4><a href="{{ tag.get_absolute_url }}" title="">{{ tag.title }}</a></h4>
-                                    </div><!-- end meta -->
-                                </div><!-- end blog-box -->
+                                </div><!-- end meta -->
+                            </div><!-- end blog-box -->
                             {% endfor %}
                         </div><!-- end blog-list -->
                     </div><!-- end page-wrapper -->

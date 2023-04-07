@@ -31,7 +31,6 @@ def create_profile(sender, instance, created, **kwargs):
 # Модель тэга - класс, объединяющий посты по схожему признаку
 class Tag(models.Model):
     title = models.CharField(max_length=20, verbose_name='Название категории', unique=True, db_index=True)
-    thumbnail = models.FileField(upload_to='tags_uploads/post_tags/')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL', allow_unicode=True)
 
     def __str__(self):
