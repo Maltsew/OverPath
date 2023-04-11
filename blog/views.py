@@ -24,6 +24,8 @@ from django.contrib.auth.forms import UserCreationForm
 # Перевод слагов на латиницу
 from transliterate import translit, get_available_language_codes
 
+from django.db.models import Q
+
 
 class ShowHomepage(ListView):
     paginate_by = 4
@@ -180,6 +182,56 @@ class LoginProfile(LoginView):
 def profile_logout(request):
     logout(request)
     return redirect('login')
+
+
+# def search_post_by_title(request):
+#     queryset = Post.objects.all()
+#     query = request.GET.get('q')
+#     if query:
+#         queryset = queryset.filter(
+#             Q(title__icontains=query)
+#         )
+#     context = {
+#         'queryset': queryset
+#     }
+#     return render(request, 'blog/search.html', context)
+
+# def get_empty_queryset():
+#     return []
+
+
+class Search(ListView):
+
+    """ Поиск постов по названию.
+    Логака поиска:
+        если поисковой запррс пуст - возвращет сообщение об ошибке пустого запроса
+        если поисковой запрос не пуст, но в модели Post нет ни одного совпадения по содержанию в названии -
+        поднимает 404 на стриницу homepage
+        если запрос не пуст и совпадения в модели найдены - показвает пост (посты)"""
+
+    template_name = 'blog/homepage.html'
+    context_object_name = 'posts'
+    paginate_by = 4
+
+    def get_queryset(self):
+        empty_query_set = []
+        if self.request.GET.get('q'):
+            return Post.objects.filter(title__icontains=self.request.GET.get('q'))
+        #raise Http404
+        # если в запрос GET.get не передано значение по ключу q, возвращет пустой queryset
+        return []
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['q'] = self.request.GET.get('q')
+        # если контекст 'posts' это пустой queryset, дает исключение на домашнюю страницу о пустом запросе
+        if context['posts'] == []:
+            print('empty posts')
+            raise Http404
+        if context['posts'].count() == 0:
+            print('no post return')
+            raise Http404
+        return context
 
 
 def pagenotfound(request, exception):

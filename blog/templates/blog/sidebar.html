@@ -1,5 +1,16 @@
 <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                         <div class="sidebar">
+                            {% if user.is_authenticated %}
+                            <div class="widget">
+                                <h2 class="widget-title">Поиск</h2>
+                                <form action="{% url 'search' %}" class="form-inline search-form" method="GET">
+                                    <div class="form-group">
+                                        <input type="text" name="q" class="form-control" placeholder="Что будем искать?">
+                                    </div>
+                                    <button type="submit"></button>
+                                </form>
+                            </div><!-- end widget -->
+                            {% endif %}
                             <div class="widget">
                                 <h2 class="widget-title">Надавно</h2>
                                 <div class="blog-list-widget">
