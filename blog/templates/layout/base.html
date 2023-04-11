@@ -51,34 +51,28 @@
 </head>
 <body>
 <div id="wrapper">
-            <div class="collapse top-search" id="collapseExample">
-            <div class="card card-block">
-                <div class="newsletter-widget text-center">
-                    <form class="form-inline">
-                        <input type="text" class="form-control" placeholder="What you are looking for?">
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                    </form>
-                </div><!-- end newsletter -->
-            </div>
-        </div><!-- end top-search -->
             <div class="topbar-section">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-6 hidden-xs-down">
-                        <div class="topsocial">
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook"></i></a>
-                        </div><!-- end social -->
-                    </div><!-- end col -->
-                    <div class="col-lg-4 hidden-md-down">
-                    </div><!-- end col -->
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                        <div class="topsearch text-right">
-                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-search"></i> Search</a>
-                        </div><!-- end search -->
-                    </div><!-- end col -->
-                </div><!-- end row -->
-            </div><!-- end header-logo -->
-        </div><!-- end topbar -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-6 hidden-xs-down">
+                            <div class="topsocial">
+                            </div><!-- end social -->
+                        </div><!-- end col -->
+                        <div class="col-lg-4 hidden-md-down">
+                        </div><!-- end col -->
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                            <div class="topsearch text-right">
+                                {% if request.user.is_authenticated %}
+                                <h5>{{ user.username }}</a>&emsp;<a href="{% url 'logout' %}">Выйти</a></h5>
+                                {% else %}
+                                <h5><a href="{% url 'register' %}">Регистрация</a>&emsp;<a href="{% url 'login' %}">Войти</a></h5>
+                                {% endif %}
+                            </div>
+                        </div><!-- end col -->
+                            <!-- <a data-toggle="collapse" href="#" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-search"></i> Search</a> -->
+                    </div><!-- end row -->
+                </div>
+            </div><!-- end topbar -->
         <div class="header-section">
             <div class="container">
                 <div class="row">
@@ -102,14 +96,13 @@
                                 <a class="nav-link color-green-hover" href="{% url 'homepage' %}">Домашняя</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="{% url 'login' %}">Войти</a>
+                                <a class="nav-link color-green-hover" href="{% url 'tags' %}">Категории</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="{% url 'categories' %}">Категории</a>
-                            </li>
+                            {% if request.user.is_authenticated %}
                             <li class="nav-item">
                                 <a class="nav-link color-green-hover" href="{% url 'add_post' %}">Добавить пост</a>
                             </li>
+                            {% endif %}
                             <li class="nav-item">
                                 <a class="nav-link color-green-hover" href="{% url 'about' %}">О сайте</a>
                             </li>
@@ -124,6 +117,7 @@
     {% block content %}
 
     {% endblock content %}
+
             <footer class="footer">
             <div class="container">
                 <div class="row">
@@ -156,6 +150,7 @@
     <!-- <div class="dmtop">Scroll to Top</div> -->
     <div class="dmtop">Scroll to Top</div>
 </div><!-- end wrapper -->
+
 
     <!-- Core JavaScript
     ================================================== -->

@@ -1,80 +1,86 @@
-{% extends "layout/base.html" %}
+{% extends "blog/homepage.html" %}
 {% load static %}
+{% load blog_tags %}
 
 
 {% block title %}
-<title>{{page_title}}</title>
+<title>{{post.title}}</title>
 {% endblock title %}
 {% block header %}
+
 {% endblock header %}
 {% block content %}
-<section class="section wb">
-   <div class="container">
-      <div class="row">
-         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <div class="page-wrapper">
-               <div class="blog-title-area">
-                  <span class="color-green"><a href="{% url 'category' post.category.pk %}" title="">{{ post.category }}</a></span>
-                  <h3>{{ post.title }}</h3>
-                  <div class="blog-meta big-meta">
-                      <!-- Все записи, созданные в конкретную дату -->
-                      <small><a href="#" title="">{{ post.created_on }}</a></small>
-                      <!-- Профиль автора поста -->
-                      <small><a href="#" title="">{{ post.author.username }}</a></small>
-                  </div><!-- end meta -->
-                  <!-- POST PHOTO -->
-                   <div class="single-post-media">
-                       <img src="{{post.preview_image.url}}" alt="" class="img-fluid">
-                   </div><!-- end media -->
-                  <!-- BLOCK CONTENT -->
-                  <div class="blog-content">
+        <section class="section wb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                        <div class="page-wrapper">
+                            <div class="blog-title-area">
+                                <div class="tag-cloud-single">
+                                    <span>Tags</span>
+                                    {% for tag in post.tags.all %}
+                                    <small><a href="{{ tag.get_absolute_url }}" title="">{{ tag }}</a></small>
+                                    {% endfor %}
+                                </div><!-- end meta -->
+                                <!-- block post title -->
+                                <h3>{{ post.title }}</h3>
+                                <div class="blog-meta big-meta">
+                                    <small><a href="#" title="">{{ post.created_on }}</a></small>
+                                    <small><a href="#" title="">{{ post.author.username }}</a></small>
+                                </div><!-- end meta -->
+                                {% if post.preview_image %}
+                                <div class="single-post-media">
+                                    <img src="{{post.preview_image.url}}" alt="" class="img-fluid">
+                                </div><!-- end media -->
+                                {% endif %}
+
+                            <div class="blog-content">
+                                <!-- block content -->
                                 <div class="pp">
-                                   <p>{{ post.content|linebreaks }}</p><!-- linebreaks фильтр добавляет тэги обзацев -->
-                                </div><!-- end pp -->
-                  </div><!-- end content -->
+                                    {{ post.content|linebreaks }}<!-- linebreaks фильтр добавляет тэги обзацев -->
+                                </div>
+                            </div><!-- end content -->
 
-                  <!-- POST TAGS -->
-                  <hr class="invis1">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="banner-spot clearfix">
+                                        <div class="banner-img">
+                                            <img src="upload/banner_01.jpg" alt="" class="img-fluid">
+                                        </div><!-- end banner-img -->
+                                    </div><!-- end banner -->
+                                </div><!-- end col -->
+                            </div><!-- end row -->
 
-                  <!-- BLOCK COMMENTS -->
-                  <div class="custombox clearfix">
-                                <h4 class="small-title">BLOCK COMMENTS</h4>
+                            <hr class="invis1">
+                                <!-- ABOUT AUTHOR BLOCK -->
+                            <div class="custombox authorbox clearfix">
+                                <h4 class="small-title">Об авторе</h4>
                                 <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="comments-list">
-                                            <div class="media">
-                                                <a class="media-left" href="#">
-                                                    <img src="{% static 'blog/images/upload/author.jpg' %}" alt="" class="rounded-circle">
-                                                </a>
-                                               <div class="media-body">
-                                               <h4 class="media-heading user_name"> COMMENTOR NAME <small> DAYS AGO </small></h4>
-                                               <p> THIS IS COMMENT </p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                        {% if post.author.profile.profile_image %}
+                                        <img src="{{ post.author.profile.profile_image.url }}" alt="" class="img-fluid rounded-circle">
+                                    </div><!-- end col -->
+                                    {% endif %}
+
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                        <!-- <h4><a href="#">AUTHOR</a></h4> -->
+                                        <h4>{{ post.author.profile }}</h4>
+                                        <p>{{ post.author.profile.about_user }}</p>
+                                        <div class="topsocial">
+                                            <!-- user social links -->
+                                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook"></i></a>
+                                        </div><!-- end social -->
                                     </div><!-- end col -->
                                 </div><!-- end row -->
-                            </div><!-- end custom-box -->
-
-                            <div class="custombox clearfix">
-                                <h4 class="small-title">Leave a Reply</h4>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <form class="form-wrapper">
-                                            <input type="text" class="form-control" placeholder="Your name">
-                                            <input type="text" class="form-control" placeholder="Email address">
-                                            <input type="text" class="form-control" placeholder="Website">
-                                            <textarea class="form-control" placeholder="Your comment"></textarea>
-                                            <button type="submit" class="btn btn-primary">Submit Comment</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- end page-wrapper -->
-                    </div><!-- end col -->
-               </div><!-- end row -->
-            </div><!-- end container -->
-   </div>
+                            </div><!-- end author-box -->
+                                <hr class="invis1">
+                            </div><!--  -->
+                        </div><!-- end container -->
+                    </div>
+                    <!-- block sidebar -->
+                    {% include 'blog/sidebar.html' %}
+                    <!-- endblock sidebar -->
+                </div>
+            </div>
         </section>
-
 {% endblock content %}

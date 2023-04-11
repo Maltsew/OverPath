@@ -1,0 +1,47 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+
+{% block title %}
+<title>Создание записи</title>
+{% endblock title %}
+{% block header %}
+{% endblock header %}
+{% block content %}
+<section class="section wb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                <div class="page-wrapper">
+                    <div class="custombox clearfix">
+                        <h4 class="small-title">Авторизация</h4>
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <!-- обработчик ошибок полей формы -->
+                                <form class="form-wrapper" method="post">
+                                    {% csrf_token %}
+                                    <!-- Описание пунктов блога -->
+                                    {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ form.non_field_errors }}</strong>
+                                    </div>
+                                    {% endif %}
+                                    {% for f in form %}
+                                        <!--<input type="text" class="form-control" placeholder="{{ f.label }}">-->
+                                        <p><h3><strong><label class="form-inline" for="{{ f.id_for_label }}">{{f.label}}: </label></strong></h3>{{ f }}</p>
+                                    {% endfor %}
+                                    <button type="submit" class="btn btn-primary">Войти</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end page-wrapper -->
+            </div><!-- end col -->
+            {% include 'blog/sidebar.html' %}
+        </div><!-- end col -->
+    </div><!-- end row -->
+    </div><!-- end container -->
+</section>
+
+{% endblock content %}
