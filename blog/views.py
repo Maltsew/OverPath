@@ -36,7 +36,9 @@ class ShowHomepage(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        # временно - показ 3 последних постов
+        # определяет контекст последних постов
+        # в templatetags определен пользовательский тэг для такой же задачи
+        # TO-DO пересмотреть функционал
         context['preview_posts'] = Post.objects.all()[:3]
         return context
 

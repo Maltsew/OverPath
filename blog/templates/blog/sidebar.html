@@ -1,3 +1,5 @@
+{% load blog_tags %}
+
 <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                         <div class="sidebar">
                             {% if user.is_authenticated %}
@@ -7,7 +9,7 @@
                                     <div class="form-group">
                                         <input type="text" name="q" class="form-control" placeholder="Что будем искать?">
                                     </div>
-                                    <button type="submit"></button>
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                                 </form>
                             </div><!-- end widget -->
                             {% endif %}
@@ -15,14 +17,19 @@
                                 <h2 class="widget-title">Надавно</h2>
                                 <div class="blog-list-widget">
                                     <div class="list-group">
-                                        <!-- группа последних постов -->
-                                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                        <!-- с помощью простого польз. тэга get_posts с фильтром получаем 3 последних записи -->
+                                        {% get_posts filter=False as posts %}
+                                        {% for post in posts %}
+                                        <a href="{{ post.get_absolute_url }}" class="list-group-item list-group-item-action flex-column align-items-start">
                                             <div class="w-100 justify-content-between">
-                                                <img src="#" alt="" class="img-fluid float-left">
-                                                <h5 class="mb-1">POST TITLE</h5>
-                                                <small>DATE</small>
+                                                <img src="" alt="" class="img-fluid float-left">
+                                                {% if post.preview_image %}
+                                                <img src="{{ post.preview_image.url }}" alt="" class="img-fluid float-left">
+                                                {% endif %}
+                                                <h5 class="mb-1">{{ post.title }}</h5>
                                             </div>
                                         </a>
+                                        {% endfor %}
                                     </div>
                                 </div><!-- end blog-list -->
                             </div><!-- end widget -->
