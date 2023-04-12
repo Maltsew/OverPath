@@ -680,7 +680,7 @@ div.tab button:hover {
 
 .dmtop {
     background-color: #111111;
-    background-image: url(blog/images/arrow.png);
+    background-image: url(/blog/static/blog/images/arrow.png);
     background-position: 50% 50%;
     background-repeat: no-repeat;
     z-index: 9999;
