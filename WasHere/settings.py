@@ -83,6 +83,14 @@ WSGI_APPLICATION = 'WasHere.wsgi.application'
 """ при работе с postgres под macos требуется пакет psycopg2-binary(2.9.5)
 Данный пакет НЕ ПОДХОДИТ для работы под ubuntu, нужный пакет: psycopg2==2.7.4 --no-binary=psycopg2"""
 
+""" Тестирование """
+""" При запустке тестов: поскольку приложение blog работает под Postgres, для проведения тестов необходимо,
+    чтобы создавалась тестовая база данных (тестовая база данных существует по тем же правилам,
+    которые указаны в settings/DATABASES.
+    По умолчанию Postgres не дает пользователю создавать DB, это надо указать явно.
+    Один из способов - использовать 'ALTER USER user CREATEDB;' к owner базы данных, в таком случае пользователь
+    получит соответствующую роль и сможет создавать тестовую БД"""
+
 if platform == 'darwin':
     DATABASES = {
         'default': {
@@ -96,6 +104,9 @@ if platform == 'darwin':
     }
 
 elif platform == "linux" or platform == "linux2":
+    """ Название БД: blogwashere
+    owner: bloguser
+    """
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
