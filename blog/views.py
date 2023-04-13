@@ -98,9 +98,7 @@ class BlogTags(ListView):
 def create_post(request):
     """ Функция добавления нового поста
     Автором поста назначается профиль, авторизованный в данный момент на сайте
-    Поле slug поста: для получения слага используется название поста, переведенное на латиницу
-    с использованием функции translit модуля transliterate (PyPy :) и пропущенное через
-    slugify.
+    Поле slug: см. метод save() модели Post
     Поле категории поста являяются обязательным к заполнению
     Тэги поста добавляются к посту после его фактического сохранения в модель
     После заполнения всех полей, кроме поля категории поста, пост сохранется в модель (первичное сохранение)
@@ -121,15 +119,6 @@ def create_post(request):
         if post_form.is_valid():
             post_form.instance.author = request.user
             post = post_form.save()
-            # Получение названия поста с формы
-            post_title = post_form.cleaned_data['title']
-            # Название поста передается слагу
-            post_slug = slugify(translit(post_title, 'ru', reversed=True), allow_unicode=True)
-            # Сохранение слага поста
-            post.slug = post_slug
-            # Предварительно сохранение поста: для добавления тэгов поста (ManyToMany
-            # с моделью Tag) необходимо чтобы пост уже существовал
-            post.save()
             post_tags = post_form.cleaned_data['tags'].split(', ') #list с тэгами из формы
             # для каждого тэга в списке post_tags
             post_full_tags = dict()

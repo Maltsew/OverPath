@@ -4,8 +4,9 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-
-
+# Перевод слагов на латиницу
+from transliterate import translit, get_available_language_codes
+from django.utils.text import slugify
 
 # Модель профиля пользователя
 class Profile(models.Model):
@@ -76,3 +77,12 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        """ Расширение функциональности метода save()
+        поле slug заполняется по правилу: транслитерировать в латиницу содержимое поля title с помощью
+        библиотеки translit, преобразовать в слагоподобный вид, обрезать до первых 100 знаков
+        и сохранить в поле slug модели"""
+        if not self.slug:
+            self.slug = slugify(translit(self.title, 'ru', reversed=True), allow_unicode=True)[:100]
+        super().save(*args, **kwargs)
