@@ -120,17 +120,11 @@ def create_post(request):
             post_form.instance.author = request.user
             post = post_form.save()
             post_tags = post_form.cleaned_data['tags'].split(', ') #list с тэгами из формы
-            # для каждого тэга в списке post_tags
-            post_full_tags = dict()
-            for i in post_tags:
-                # генерирование слага по названию, предварительно переводя его с кириллицы на латиницу
-                slug_string = slugify(translit(i, 'ru', reversed=True), allow_unicode=True)
-                # добавление в словарь пару 'тэг': 'тэг_слаг'
-                post_full_tags[i] = slug_string
             # для каждого тэга из словаря с парами 'тэг': 'тэг_слаг' - получить (или создать) queryset из Tag
-            for tag in post_full_tags:
-                Tag.objects.get_or_create(title=tag, slug=post_full_tags[tag])
-                post.tags.add(Tag.objects.get(title=tag, slug=post_full_tags[tag]))
+            tags_dict = create_tags_from_list(post_tags)
+            for tag in tags_dict:
+                Tag.objects.get_or_create(title=tag, slug=tags_dict[tag])
+                post.tags.add(Tag.objects.get(title=tag, slug=tags_dict[tag]))
             # Сохранение поста
             post.save()
             # messages.success(request, 'Опубликовано')
@@ -140,6 +134,19 @@ def create_post(request):
     else:
         post_form = PostForm()
     return render(request, 'blog/add_post.html', context={'form': post_form})
+
+
+def create_tags_from_list(post_tags: list) -> dict:
+    """ Преобразует список строк с тэгами поста в словарь
+    с парами тэг: слаг_тэга
+    слаг получается переводом названия тэга на латиницу и вызовом slugify
+    TO-DO добавить обработчик пустого словаря"""
+    post_full_tags = dict()
+    for i in post_tags:
+        # генерирование слага по названию, предварительно переводя его с кириллицы на латиницу
+        slug_string = slugify(translit(i, 'ru', reversed=True), allow_unicode=True)
+        post_full_tags[i] = slug_string
+    return post_full_tags
 
 
 def register(response):
