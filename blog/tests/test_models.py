@@ -1,10 +1,14 @@
 from django.test import TestCase
-from blog.models import Profile
+from django.urls import reverse
+
+from blog.models import Profile, Tag
 from django.contrib.auth.models import User
 
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from unittest import skip
+
+from blog.views import BlogTags
 
 
 """ Тесты для моделей приложения blog
@@ -73,3 +77,35 @@ class ProfileModelTests(TestCase):
         user = ProfileModelTests.user
         profile = Profile.objects.get(user=user)
         self.assertEqual(profile._meta.verbose_name_plural.title(), 'Профили')
+
+class TagModelTests(TestCase):
+    """ Тесты для модели Tag"""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        """ Создаем тестовую запись в БД
+        сохраняем созданную запись в качестве переменной класса"""
+        cls.tag = Tag.objects.create(title='Тест', slug='test')
+
+    def test_tag_represent(self):
+        """ __str__ возвращает название тэга"""
+        tag = TagModelTests.tag
+        self.assertEqual(tag.title, str(tag))
+
+    def test_get_absolute_url(self):
+        """ get_absolute_url возвращает нужный слаг
+        с точки зрения модели """
+        tag = TagModelTests.tag
+        expected_absolute_url = '/blog/tag/' + tag.slug + '/'
+        self.assertEqual(expected_absolute_url, tag.get_absolute_url())
+
+    def test_tag_verbose_name(self):
+        """ Полученное из Meta модели Tag verbose_name"""
+        tag = TagModelTests.tag
+        self.assertEqual(tag._meta.verbose_name.title(), 'Тэг')
+
+    def test_tag_verbose_name_plural(self):
+        """ Полученное из Meta модели Tag verbose_name_plural"""
+        tag = TagModelTests.tag
+        self.assertEqual(tag._meta.verbose_name_plural.title(), 'Тэги')
