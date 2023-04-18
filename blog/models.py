@@ -8,6 +8,7 @@ from django.db.models.signals import post_save
 from transliterate import translit, get_available_language_codes
 from django.utils.text import slugify
 
+
 # Модель профиля пользователя
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
@@ -85,3 +86,23 @@ class Post(models.Model):
         if not self.slug:
             self.slug = slugify(translit(self.title, 'ru', reversed=True), allow_unicode=True)[:100]
         super().save(*args, **kwargs)
+
+
+def create_tags_from_list(post_tags: list) -> dict:
+    """ Преобразует список строк с тэгами поста в словарь
+    с парами тэг: слаг_тэга
+    слаг получается переводом названия тэга на латиницу и вызовом slugify
+    TO-DO добавить обработчик пустого словаря"""
+    post_full_tags = dict()
+    for i in post_tags:
+        # генерирование слага по названию, предварительно переводя его с кириллицы на латиницу
+        slug_string = slugify(translit(i, 'ru', reversed=True), allow_unicode=True)
+        post_full_tags[i] = slug_string
+    return post_full_tags
+
+
+def transform_tags_str_to_list(tags: str) -> list:
+    """ Преобразует строку с тэгами в список тэгов
+    Вынесено в отдельный метод из-за частого использования функционала преобразовании строки
+    и для удобного тестирования"""
+    return tags.split(', ')

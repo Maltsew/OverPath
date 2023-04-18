@@ -3,7 +3,7 @@ import string
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
-from blog.models import Post, Tag, Profile
+from blog.models import Post, Tag, Profile, transform_tags_str_to_list, create_tags_from_list
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.http import HttpResponseNotFound, Http404, HttpResponse
@@ -131,7 +131,9 @@ def create_post(request):
             post_form.instance.author = request.user
             post = post_form.save()
             # TODO валидация поля тэгов, проверка на пустую строку и т.п.
-            post_tags = post_form.cleaned_data['tags'].split(', ') #list с тэгами из формы
+            post_tags = post_form.cleaned_data['tags']
+            # list с тэгами из формы
+            post_tags = transform_tags_str_to_list(post_tags)
             # для каждого тэга из словаря с парами 'тэг': 'тэг_слаг' - получить (или создать) queryset из Tag
             tags_dict = create_tags_from_list(post_tags)
             for tag in tags_dict:
@@ -146,23 +148,6 @@ def create_post(request):
     else:
         post_form = PostForm()
     return render(request, 'blog/add_post.html', context={'form': post_form})
-
-
-def create_tags_from_list(post_tags: list) -> dict:
-    """ Преобразует список строк с тэгами поста в словарь
-    с парами тэг: слаг_тэга
-    слаг получается переводом названия тэга на латиницу и вызовом slugify
-    TO-DO добавить обработчик пустого словаря"""
-    post_full_tags = dict()
-    for i in post_tags:
-        # генерирование слага по названию, предварительно переводя его с кириллицы на латиницу
-        slug_string = slugify(translit(i, 'ru', reversed=True), allow_unicode=True)
-        post_full_tags[i] = slug_string
-    return post_full_tags
-
-
-def validate_tags(tags: str) -> bool:
-    pass
 
 
 def register(response):
