@@ -14,11 +14,11 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
 from django.utils.text import slugify
 
 
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 
 # Перевод слагов на латиницу
@@ -28,11 +28,13 @@ from django.db.models import Q
 
 
 class ShowHomepage(ListView):
+    """ Отображение домашней страницы"""
     paginate_by = 4
     model = Post
     template_name = 'blog/homepage.html'
     context_object_name = 'posts'
-    # allow_empty = False
+    # обработка перехода по несуществующему адресу
+    allow_empty = False
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -44,6 +46,7 @@ class ShowHomepage(ListView):
 
 
 def about(request):
+    """ """
     about_msg = 'ABOUT ME'
     context = {
         'about_msg': about_msg,
@@ -52,6 +55,9 @@ def about(request):
 
 
 def tags(request):
+    """ Отображение всех имеющихся в БД тэгов
+    Взаимодействует с польз. тэгом из blog_tags - get_all_tags()
+    view только для обработки маршрута по адресу 'tags' """
     # всего категорий
     context = {
         'title': 'Все тэги',
@@ -60,6 +66,8 @@ def tags(request):
 
 
 class ShowPost(DetailView):
+    """ Отображение конкретно выбранного поста
+    queryset возвращает выбранный пост по слагу"""
     model = Post
     template_name = 'blog/post.html'
     slug_url_kwarg = 'post_slug'
@@ -74,6 +82,9 @@ class ShowPost(DetailView):
 
 
 class BlogTags(ListView):
+    """TODO сменить название
+    Обрабатывает отображение конкретно выбранного тэга, и возвращает все посты,
+    которые содержат данный выбранный тэг"""
     model = Post
     template_name = 'blog/posts_by_tags.html'
     context_object_name = 'posts'
@@ -119,6 +130,7 @@ def create_post(request):
         if post_form.is_valid():
             post_form.instance.author = request.user
             post = post_form.save()
+            # TODO валидация поля тэгов, проверка на пустую строку и т.п.
             post_tags = post_form.cleaned_data['tags'].split(', ') #list с тэгами из формы
             # для каждого тэга из словаря с парами 'тэг': 'тэг_слаг' - получить (или создать) queryset из Tag
             tags_dict = create_tags_from_list(post_tags)
@@ -147,6 +159,10 @@ def create_tags_from_list(post_tags: list) -> dict:
         slug_string = slugify(translit(i, 'ru', reversed=True), allow_unicode=True)
         post_full_tags[i] = slug_string
     return post_full_tags
+
+
+def validate_tags(tags: str) -> bool:
+    pass
 
 
 def register(response):
@@ -198,14 +214,15 @@ def profile_logout(request):
 #     return []
 
 
-class Search(ListView):
-
+class Search(LoginRequiredMixin, ListView):
+    # TODO поиск не отображается на странице, но доступен не авторизованному
     """ Поиск постов по названию.
     Логака поиска:
         если поисковой запррс пуст - возвращет сообщение об ошибке пустого запроса
         если поисковой запрос не пуст, но в модели Post нет ни одного совпадения по содержанию в названии -
         поднимает 404 на стриницу homepage
-        если запрос не пуст и совпадения в модели найдены - показвает пост (посты)"""
+        если запрос не пуст и совпадения в модели найдены - показвает пост (посты)
+        LoginRequiredMixin redirects to login or rises 302 check"""
 
     template_name = 'blog/homepage.html'
     context_object_name = 'posts'
@@ -224,10 +241,10 @@ class Search(ListView):
         context['q'] = self.request.GET.get('q')
         # если контекст 'posts' это пустой queryset, дает исключение на домашнюю страницу о пустом запросе
         if context['posts'] == []:
-            print('empty posts')
+            #print('empty posts')
             raise Http404
         if context['posts'].count() == 0:
-            print('no post return')
+            #print('no post return')
             raise Http404
         return context
 
