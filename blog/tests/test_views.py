@@ -132,13 +132,9 @@ class BlogPagesTests(TestCase):
     def test_create_tags_from_valid_tags_string(self):
         """ Функция преобразования строки с тэгами из формы создания поста
         преобразует тэги в словарь 'tag': 'tag_slug' """
-        valid_tag_string = "Проверка, тестовый тэг, новый тэг"
+        valid_tag_string = "Проверка,тестовый тэг,новый тэг"
         # преобразование в список как в create_post
-        valid_tag_list = valid_tag_string.split(', ')
+        valid_tag_list = valid_tag_string.split(',')
         get_tags = create_tags_from_list(valid_tag_list)
         expected_tags_dict = {'Проверка': 'proverka', 'тестовый тэг': 'testovyj-teg', 'новый тэг': 'novyj-teg'}
         self.assertEqual(expected_tags_dict, get_tags)
-
-    def test_create_tags_from_unvalid_strings(self):
-        """ Проверка валидации функции преобразования строки с тэгами из формы создания поста """
-
