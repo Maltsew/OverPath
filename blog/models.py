@@ -48,16 +48,16 @@ class Tag(models.Model):
 
 # Модель "пост" - основной тип публикуемой информации в блоге
 class Post(models.Model):
-    title = models.CharField(max_length=200, verbose_name='Название поста')
+    title = models.CharField(max_length=200, verbose_name='Заголовок')
     author = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='Автор')
     updated_on = models.DateTimeField(auto_now=True, verbose_name='Дата обновления поста')
-    content = models.TextField(verbose_name='Содержание поста')
+    content = models.TextField(verbose_name='Содержание')
     tags = models.ManyToManyField(Tag, verbose_name='Тэги поста')
     created_on = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания поста')
     # Пока что, для превью фото выбирается отдельно
-    preview_image = models.FileField(upload_to='post_uploads/post_images/', verbose_name='Превью поста')
+    preview_image = models.FileField(upload_to='post_uploads/post_images/', verbose_name='Фотография для превью')
     # А для наполнения поста
-    images = models.FileField(upload_to='post_uploads/post_images/', verbose_name='Картинки поста', null=True, blank=True)
+    images = models.FileField(upload_to='post_uploads/post_images/', verbose_name='Фотографии', null=True, blank=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL', allow_unicode=True)
 
 
@@ -105,4 +105,4 @@ def transform_tags_str_to_list(tags: str) -> list:
     """ Преобразует строку с тэгами в список тэгов
     Вынесено в отдельный метод из-за частого использования функционала преобразовании строки
     и для удобного тестирования"""
-    return tags.split(', ')
+    return tags.split(',')
