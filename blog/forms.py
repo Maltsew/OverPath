@@ -1,15 +1,11 @@
-# Форма, связанная с моделью
-from django.forms import ModelForm
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django import forms
 from .models import Post, Profile, Tag
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
-from django.utils.text import slugify
 
-# Перевод слагов на латиницу
-from transliterate import translit, get_available_language_codes
+from blog.views import transform_tags_str_to_list
 
 
 class PostForm(forms.ModelForm):
@@ -22,15 +18,16 @@ class PostForm(forms.ModelForm):
     tags: Тэги добавляются к посту как get_or_create тэгов из модели Tag. Тэгов может быть введено несколько,
     в таком случае они разделяются запятой и поочередно добавляются к посту
     """
-    tags = forms.CharField(label='Категории поста', max_length=200,
+    tags = forms.CharField(label='Категории', max_length=200,
                                  widget=forms.TextInput(attrs={
-                                     'placeholder': 'Если категорий несколько, укажите их через пробел и запятую',
-                                     'size': 80}))
+                                     'placeholder': 'Если категорий несколько, укажите их через запятую',
+                                     'size': 79}))
+
     class Meta:
         model = Post
         fields = ['title', 'content', 'preview_image', 'images']
         widgets = {
-            'title': forms.TextInput(attrs={'size': 80}),
+            'title': forms.TextInput(attrs={'size': 79}),
             'content': forms.Textarea(attrs={'cols': 79, 'rows': 20}),
         }
 
@@ -50,6 +47,12 @@ class PostForm(forms.ModelForm):
     def clean_tags(self):
         cleaned_data = self.cleaned_data
         tags = cleaned_data['tags']
+        tags = transform_tags_str_to_list(tags)
+        # TODO валидация поля (отбросить все пробелы и просмотр только чсимволов)
+        for tag in tags:
+            if tag in (',', ', ', '', ' ',):
+                msg = 'Укажите категорию'
+                raise forms.ValidationError(msg, code='invalid')
         return tags
 
 
@@ -74,8 +77,6 @@ class ProfileRegistrationForm(UserCreationForm):
             'password1': forms.PasswordInput(),
             'password1': forms.PasswordInput(),
         }
-
-
 
     def clean_about_user(self):
         about_user = self.cleaned_data['about_user']
