@@ -130,10 +130,7 @@ def create_post(request):
         if post_form.is_valid():
             post_form.instance.author = request.user
             post = post_form.save()
-            # TODO валидация поля тэгов, проверка на пустую строку и т.п.
             post_tags = post_form.cleaned_data['tags']
-            # list с тэгами из формы
-            post_tags = transform_tags_str_to_list(post_tags)
             # для каждого тэга из словаря с парами 'тэг': 'тэг_слаг' - получить (или создать) queryset из Tag
             tags_dict = create_tags_from_list(post_tags)
             for tag in tags_dict:
