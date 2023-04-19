@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from blog.models import Profile, Tag, Post
+from blog.models import Profile, Tag, Post, transform_tags_str_to_list, create_tags_from_list
 from django.contrib.auth.models import User
 
 from django.db import IntegrityError
@@ -110,6 +110,28 @@ class TagModelTests(TestCase):
         """ Полученное из Meta модели Tag verbose_name_plural"""
         tag = TagModelTests.tag
         self.assertEqual(tag._meta.verbose_name_plural.title(), 'Тэги')
+
+    def test_transfrom_tags_str_to_list(self):
+        """ Функция преобразует строку с тэгами в список"""
+        tags_string = 'mew mew, новый тест, проверка'
+        tags_list = transform_tags_str_to_list(tags_string)
+        self.assertEqual(isinstance(tags_list, list), True)
+
+    def test_create_tags_from_list(self):
+        """ Функция преобразует список тэгов в словарь тэгов"""
+        tags_list = ['mew mew, новый тест, проверка']
+        tags_dict = create_tags_from_list(tags_list)
+        self.assertEqual(isinstance(tags_dict, dict), True)
+
+    def test_create_tags_from_list_uses_correct_logic(self):
+        """ Функция реобразования списка тэгов в словарь вида тэг:слаг_тэга
+        слаг_тэга получается переводом названия тэга на латиницу и вызовом slugify"""
+        # исходный список тэгов
+        tags_list = ['Категория', 'Test cat', 'Новая категория']
+        excpected_tags_dict = {'Категория': 'kategorija', 'Test cat': 'test-cat', 'Новая категория': 'novaja-kategorija'}
+        # полученный словарь из исходного списка тэгов
+        tags_dict = create_tags_from_list(tags_list)
+        self.assertEqual(excpected_tags_dict, tags_dict)
 
 
 class PostModelTests(TestCase):
