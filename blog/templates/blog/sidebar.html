@@ -37,8 +37,10 @@
                                 <h2 class="widget-title">Популярные категории</h2>
                                 <div class="link-widget">
                                     <ul>
-                                        <li><a href="#">TAG1<span>(21)</span></a></li>
-                                        <li><a href="#">TAG2<span>(15)</span></a></li>
+                                    {% get_tag_uses_counter as pop_tags %}
+                                    {% for tag, counter in pop_tags.items %}
+                                        <li><a href="#">{{ tag }}<span>{{ counter }}</span></a>
+                                    {% endfor %}
                                     </ul>
                                 </div><!-- end link-widget -->
                             </div><!-- end widget -->
