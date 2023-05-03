@@ -180,22 +180,6 @@ def profile_logout(request):
     return redirect('login')
 
 
-# def search_post_by_title(request):
-#     queryset = Post.objects.all()
-#     query = request.GET.get('q')
-#     if query:
-#         queryset = queryset.filter(
-#             Q(title__icontains=query)
-#         )
-#     context = {
-#         'queryset': queryset
-#     }
-#     return render(request, 'blog/search.html', context)
-
-# def get_empty_queryset():
-#     return []
-
-
 class Search(LoginRequiredMixin, ListView):
     # TODO поиск не отображается на странице, но доступен не авторизованному
     """ Поиск постов по названию.
