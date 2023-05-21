@@ -1,20 +1,12 @@
-from django.test import TestCase
-from django.urls import reverse
-
-from blog.models import Profile, Tag, Post, transform_tags_str_to_list, create_tags_from_list
-from django.contrib.auth.models import User
-
-from django.db import IntegrityError
-from django.core.exceptions import ObjectDoesNotExist
-from unittest import skip
-
-from transliterate import translit, get_available_language_codes
-from django.utils.text import slugify
-
 """ Тесты для моделей приложения blog
 !WARNING!
 Для работы с тестами необходимо ознакомится с документацией 'Тестирование' в разделе WasHere/settings.py
 """
+from django.test import TestCase
+from blog.models import Profile, Tag, Post, transform_tags_str_to_list, create_tags_from_list
+from django.contrib.auth.models import User
+from django.db import IntegrityError
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class ProfileModelTests(TestCase):
@@ -98,7 +90,7 @@ class TagModelTests(TestCase):
         """ get_absolute_url возвращает нужный слаг
         с точки зрения модели """
         tag = TagModelTests.tag
-        expected_absolute_url = '/blog/tag/' + tag.slug + '/'
+        expected_absolute_url = '/tag/' + tag.slug + '/'
         self.assertEqual(expected_absolute_url, tag.get_absolute_url())
 
     def test_tag_verbose_name(self):
@@ -156,6 +148,13 @@ class PostModelTests(TestCase):
         post = PostModelTests.post
         expected_post_slug = 'test-title'
         self.assertEqual(expected_post_slug, post.slug)
+
+    def test_get_absolute_url(self):
+        """ get_absolute_url возвращает нужный слаг
+        с точки зрения модели """
+        post = TagModelTests.post
+        expected_absolute_url = '/post/' + post.slug + '/'
+        self.assertEqual(expected_absolute_url, post.get_absolute_url())
 
     def test_post_slug_len(self):
         """ слаг поста ограничен 100 первыми символами названия"""
