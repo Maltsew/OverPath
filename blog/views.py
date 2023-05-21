@@ -197,7 +197,6 @@ def profile_logout(request):
 
 
 class Search(LoginRequiredMixin, ListView):
-    # TODO поиск не отображается на странице, но доступен не авторизованному
     """ Поиск постов по названию.
     Логака поиска:
         если поисковой запррс пуст - возвращет сообщение об ошибке пустого запроса
@@ -234,4 +233,5 @@ class Search(LoginRequiredMixin, ListView):
 def pagenotfound(request, exception):
     """ Отображение страницы ошибки в случае перехода на несуществующую страницу
      в режиме DEBUG=False"""
+    # TODO создать шаблон страницы 404 от шаблона домашней
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
