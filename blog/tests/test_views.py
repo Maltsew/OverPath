@@ -1,12 +1,74 @@
+""" Тесты views для приложения blog
+особенностью проверки доступности страниц является то, что в качестве аргумента response используется имя
+маршрута
+"""
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from blog.models import Post, Tag
 from django.urls import reverse
 from unittest import skip
 from blog.views import create_tags_from_list
+from django.contrib import auth
 
 
-""" Тесты views для приложения blog"""
+class StaticPagesTests(TestCase):
+    """
+    тестирование статических страниц
+    """
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.client = Client()
+
+    def test_about_page_status_OK(self):
+        """
+        Проверка доступности адреса about/
+        """
+        response = self.client.get(reverse('about'))
+        self.assertEqual(response.status_code, 200)
+
+
+class BlogEmptyPagesTests(TestCase):
+    """
+    Тестирование тех страницы приложения блог, для которых Allow_Empty = False, то есть польз. видит страницу 404
+    """
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.guest_client = Client()
+
+    @skip
+    def test_empty_homepage_uses_404_template(self):
+        """
+        Если нет ни одного поста, домашняя страница отображает страницу 404
+        """
+        # TODO создать страницу 404
+        response = self.guest_client.get(reverse('homepage'))
+        self.assertTemplateUsed(response, 'blog/404.html')
+
+    def test_empty_homepage_status_404(self):
+        """
+        Если нет ни одного поста, домашняя страница возвращает 404
+        """
+        response = self.guest_client.get(reverse('homepage'))
+        self.assertEqual(response.status_code, 404)
+
+    @skip
+    def test_empty_posts_by_tags_uses_404_template(self):
+        """ Если нет ни одного тэга, страница отображения тэгов возвращает страницу 404"""
+        # создаем тэг
+        tag = Tag.objects.create(title='Тест', slug='test')
+        # по выбранному тэгу нет ни одного поста, должен возвращать страницу 404
+        response = self.guest_client.get(reverse('tag', kwargs={'tag_slug': tag.slug}))
+        self.assertTemplateUsed(response, 'blog/404.html')
+
+    def test_empty_posts_by_tags_status_404(self):
+        """
+        Если нет ни одного поста, домашняя страница возвращает 404
+        """
+        tag = Tag.objects.create(title='Тест', slug='test')
+        response = self.guest_client.get(reverse('tag', kwargs={'tag_slug': tag.slug}))
+        self.assertEqual(response.status_code, 404)
 
 
 class BlogPagesTests(TestCase):
@@ -96,19 +158,22 @@ class BlogPagesTests(TestCase):
         response = self.authorized_client.get(reverse('logout'))
         self.assertEqual(response.status_code, 302)
 
-    @skip
     def test_search_uses_correct_template(self):
-        """ Поиск использует соотв. шаблон
-        Поиск доступен только авторизованным польз.
-        Пробуем найти название поста"""
-        # TODO после добавления LoginRequiredMixin логику теста надо пересмотреть
+        """ Поиск использует соотв. шаблон. Поиск доступен только авторизованным польз.
+        Для выполнения поиска необходимо выполнение условия is_authenticated=True, т.к. в основе поиска исп.
+        LoginRequiredMixin. Для проверки создадим нового пользователя с логин и пароль, и выполним login
+        """
         post = BlogPagesTests.post
+        title = post.title.lower().replace(' ', '+')
         url = '{url}?{filter}={value}'.format(
             url=reverse('search'),
             filter='q',
-            value=post.title
+            value=title
         )
-        response = self.authorized_clie.get(url)
+        User.objects.create_user(username='IvanovIvan1', password='123456', first_name='Ivan', last_name='Ivanov',
+                                 email='ivanov@gmail.com')
+        self.authorized_client.login(username='IvanovIvan1', password='123456')
+        response = self.authorized_client.get(url)
         self.assertTemplateUsed(response, 'blog/homepage.html')
 
     def test_empty_search_uses_404(self):
@@ -121,10 +186,11 @@ class BlogPagesTests(TestCase):
         должен быть недоступен для неавторизованного пользователя
         """
         post = BlogPagesTests.post
+        title = post.title.lower().replace(' ', '+')
         url = '{url}?{filter}={value}'.format(
             url=reverse('search'),
             filter='q',
-            value=post.title
+            value=title
         )
         response = self.viewer.get(url)
         self.assertEqual(response.status_code, 302)
