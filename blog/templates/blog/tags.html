@@ -43,6 +43,10 @@
                                 </div><!-- end meta -->
                             </div><!-- end blog-box -->
                             {% endfor %}
+                            {% get_tag_uses_counter as pop_tags %}
+                            {% for tag in pop_tags %}
+                            {{ tag }}
+                            {% endfor %}
                         </div><!-- end blog-list -->
                     </div><!-- end page-wrapper -->
        </div>
