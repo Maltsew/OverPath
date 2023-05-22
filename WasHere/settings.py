@@ -9,8 +9,6 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
-from pathlib import Path
 import os
 from sys import platform
 
@@ -80,10 +78,10 @@ WSGI_APPLICATION = 'WasHere.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-""" при работе с postgres под macos требуется пакет psycopg2-binary(2.9.5)
-Данный пакет НЕ ПОДХОДИТ для работы под ubuntu, нужный пакет: psycopg2==2.7.4 --no-binary=psycopg2"""
+# при работе с postgres под macos требуется пакет psycopg2-binary(2.9.5)
+# Данный пакет НЕ ПОДХОДИТ для работы под ubuntu, нужный пакет: psycopg2==2.7.4 --no-binary=psycopg2
 
-""" Тестирование """
+# Тестирование
 """ При запустке тестов: поскольку приложение blog работает под Postgres, для проведения тестов необходимо,
     чтобы создавалась тестовая база данных (тестовая база данных существует по тем же правилам,
     которые указаны в settings/DATABASES.
@@ -91,33 +89,28 @@ WSGI_APPLICATION = 'WasHere.wsgi.application'
     Один из способов - использовать 'ALTER USER user CREATEDB;' к owner базы данных, в таком случае пользователь
     получит соответствующую роль и сможет создавать тестовую БД"""
 
-if platform == 'darwin':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'a2095',
-            'USER': 'a2095',
-            'PASSWORD': '',
-            'HOST': 'localhost',
-            'PORT': '5432',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('DB_HOST'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASS'),
     }
+}
 
-elif platform == "linux" or platform == "linux2":
-    """ Название БД: blogwashere
-    owner: bloguser
-    """
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'blogwashere',
-            'USER': 'bloguser',
-            'PASSWORD': 'ubuntu',
-            'HOST': 'localhost',
-            'PORT': '',
-        }
-    }
-
+# elif platform in ("linux", "linux2"):
+#     # Следует перенести все перменные в переменные окружения
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'blogwashere',
+#             'USER': 'bloguser',
+#             'PASSWORD': 'ubuntu',
+#             'HOST': 'localhost',
+#             'PORT': '',
+#         }
+#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
