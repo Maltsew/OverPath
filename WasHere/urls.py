@@ -27,4 +27,3 @@ urlpatterns = [
 # Настройка просмотра статических медиа при работе в отладке
 
 handler404 = blog.views.pagenotfound
-
