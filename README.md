@@ -16,8 +16,6 @@ OverPath - the perfect place for those who like to travel and look for new place
 
 [Installation](#installation)
 
-[Extra Dependences](#extra-dependences)
-
 [Model](#model)
 
 [Django Admin](#django-admin)
@@ -31,7 +29,7 @@ OverPath - the perfect place for those who like to travel and look for new place
 [License](#license)
 
 ## Common
-A Django (ver. 3.2) based blogging application with PostgreSQL management.
+A Django (ver. 4.2) based blogging application with PostgreSQL management.
 
 ## Features
 - Register/Login new author
@@ -39,11 +37,55 @@ A Django (ver. 3.2) based blogging application with PostgreSQL management.
 - Browse the feed, consisting of different posts
 
 
-## Installation
-123
+## Installation & Run
+Copy project from repo with git:
+```bash
+git clone https://github.com/Maltsew/OverPath.git
+```
+### Docker
+#### Prerequisites
 
-## Extra Dependences
-[transliterate](http://pypi.com) - An additional package which gives an opportunity for the translation of the text from Latin in Cyrillics
+You need to have Docker Engine and Docker Compose on your machine.
+
+#### Running
+Starting working with Docker you need to use the following commands:
+
+```bash
+docker-compose build
+```
+After you see the message about successful build, like
+
+`=> => writing image sha256:`\
+`=> => naming to docker.io/library/`
+
+it is possible to start the app. Run command
+```bash
+docker-compose up
+```
+At successful start the message in the console will be like:
+
+For Django app
+
+`washere-washere-1   | Django version 4.2.1, using settings 'WasHere.settings'`
+
+`washere-washere-1   | Starting development server at http://0.0.0.0:8000/'`
+
+`washere-washere-1   | Quit the server with CONTROL-C.`
+
+For database
+
+`washere-database-1  | 2023-05-22 21:16:42.977 UTC [1] LOG:  database system is ready to accept connections
+`
+
+After successful app launch it is necessary to run database migrations. With terminal run:
+
+`docker-compose run --rm washere sh -c "python manage.py migrate"`
+
+And create superuser for Django Admin
+
+`docker-compose run --rm washere sh -c "python manage.py createsuperuser"`
+
+Django development server is ready to work at `http://0.0.0.0:8000/`
 
 ## Model
 The application the blog consists of three main models: Profile, Tag and Post.
@@ -55,46 +97,18 @@ The application the blog consists of three main models: Profile, Tag and Post.
 `Post` is the main model of information representation. Consists of the title and the contents. The author of the post is the registered and authorized user. Contains the obligatory image for the preview, and optional images for content. Tags are optional, but recommended.
 
 ## Django Admin
-Django Admin is available on `http://host/admin` route. \
+Django Admin is available on `http://0.0.0.0:8000/admin` route. \
 In administrator panel are registered and available to use (display and search) of the fields in `Tag` and `Post` models.
 
 ## Databases
-By default in the app the PostgreSQL is used.\
-The database configuration is defined in the `settings.py` file and by default makes:
-```bash
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env.DB_NAME,
-        'USER': env.DB_USER,
-        'PASSWORD': secrets.DB_PASSWORD,
-        'HOST': env.DB_HOST,
-        'PORT': env.DB_PORT,
-    }
-}
-```
-The best method of vars storage - not to specify variables directly, but to use variable environments
-
-(https://) /best practice
-
-```bash
-intall
-```
+App using PostgreSQL management.
 
 ## Tests
-Tests of the application use a Python standard library module: unittest. This module defines tests using a class-based approach.
+Tests of the application use a Python standard library module Unittest
 
-Application works under a PostgreSQL system, therefore for carrying out tests it is necessary to configure creation of the test database.
-By default system PostgreSQL does not permit the common user to create base, it is the opportunity it is necessary to specify obviously. For this purpose it is possible to use the command `ALTER USER *your_db_user* CREATEDB;`to the your owner of the database.
+Run tests with `docker-compose up`:
 
-Then use:
-
-`./manage.py test blog` run all tests,
-
-Or:
-
-`./manage.py test blog.tests.test_models, ./manage.py test blog.tests.test_views, ./manage.py test blog.tests.test_urls` running to chosen functionality in test_models, test_views, test_urls files.
-
+`docker-compose run --rm washere sh -c "python manage.py test"`
 
 ## License
 OverPath is released under the MIT License.
