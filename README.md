@@ -7,6 +7,9 @@ Create categories for the posts - so it will be easier for other users to find c
 Add the photo to share the impressions and to inspire others on new adventures. \
 OverPath - the perfect place for those who like to travel and look for new places for a research.
 
+## Badges
+![workflow](https://github.com/Maltsew/OverPath/actions/workflows/ci.yml/badge.svg?branch=main)
+
 ## Content
 [About](#about)
 
