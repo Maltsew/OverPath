@@ -99,18 +99,10 @@ DATABASES = {
     }
 }
 
-# elif platform in ("linux", "linux2"):
-#     # Следует перенести все перменные в переменные окружения
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql',
-#             'NAME': 'blogwashere',
-#             'USER': 'bloguser',
-#             'PASSWORD': 'ubuntu',
-#             'HOST': 'localhost',
-#             'PORT': '',
-#         }
-#     }
+import sys
+if 'test' in sys.argv or 'test\_coverage' in sys.argv: #Covers regular testing and django-coverage
+    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+    DATABASES['default']['NAME'] = ':memory:'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
