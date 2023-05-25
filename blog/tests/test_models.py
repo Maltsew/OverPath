@@ -139,7 +139,7 @@ class PostModelTests(TestCase):
         cls.tag = Tag.objects.create(title='Тест', slug='test')
         cls.user = User.objects.create(username='IvanovIvan', first_name='Ivan', last_name='Ivanov',
                                        email='ivanov@gmail.com')
-        cls.post = Post.objects.create(title='Test Title', author=cls.user, content='Test post content')
+        cls.post = Post.objects.create(title='Test Title', author=cls.user, content='Test post content', slug='test-title')
         cls.post.tags.add(cls.tag)
 
     def test_save_create_post_slug(self):
@@ -152,7 +152,7 @@ class PostModelTests(TestCase):
     def test_get_absolute_url(self):
         """ get_absolute_url возвращает нужный слаг
         с точки зрения модели """
-        post = TagModelTests.post
+        post = PostModelTests.post
         expected_absolute_url = '/post/' + post.slug + '/'
         self.assertEqual(expected_absolute_url, post.get_absolute_url())
 
